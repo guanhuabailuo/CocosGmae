@@ -5,3 +5,9 @@ export enum CardType{
     zi="zi",
     feng="feng",
 }
+
+export enum PoolType{
+    SendPool = "SendPool",
+    GamePool = "GamePool",
+    WinPool = "WinPool",
+}

@@ -29,12 +29,19 @@ export default class NewClass extends cc.Component {
 
     start () {
         for (let i = 0; i < 16; i++) {
-            let cardNode = cc.instantiate(this.card);
-            let cardCp = cardNode.getComponent(CardNode);
-            let card:Card = new Card(CardType.tiao,i);
-            cardCp.initUnit(card);
+            let cardNode =  this.createCardNode(CardType.tiao,i);
             cardNode.setParent(this.cardPool);
         }
+        
+    }
+
+    createCardNode(cardType:CardType,num:number){
+        let cardNode = cc.instantiate(this.card);
+        let cardCp = cardNode.getComponent(CardNode);
+        let card:Card = new Card(cardType,num);
+        cardCp.card = card;
+        card.node = cardNode;
+        return cardNode;
     }
 
     

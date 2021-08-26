@@ -6,6 +6,7 @@
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import { EventId } from "../Define/EventId";
+import { PoolType } from "../Define/Type";
 import { EVENT } from "../Framework/Event/EventMgr";
 import Card from "../GamePlay/Card";
 
@@ -19,11 +20,17 @@ export default class CardNode extends cc.Component {
     label:cc.Label = null;
 
     @property({type:cc.Node})
-    border:cc.Node;
+    border:cc.Node = null;
 
-    card:Card;
+    private _card: Card;
+    
+    private _poolType: PoolType;
+
+    
 
     tween:cc.Tween;
+
+    
 
     start () {
         this.node.on(cc.Node.EventType.TOUCH_START,this.onTouchStart,this,false);
@@ -46,12 +53,6 @@ export default class CardNode extends cc.Component {
         }
     }
 
-    initUnit(unit:Card){
-        this.card = unit;
-        this.card.init(this.node);
-        this.label.string ="" +this.card.number+this.card.type;
-    }
-
     onSelect() {
         this.tween =  cc.tween(this.border).to(1,{opacity:255}).to(1,{opacity:50}).to(1,{opacity:255}).start();
     }
@@ -63,7 +64,22 @@ export default class CardNode extends cc.Component {
     onTouchMove(event:cc.Event.EventTouch){
 
     }
+
+    public get poolType(): PoolType {
+        return this._poolType;
+    }
+    public set poolType(value: PoolType) {
+        this._poolType = value;
+    }
     
+    public get card(): Card {
+        return this._card;
+    }
+    public set card(value: Card) {
+        this._card = value;
+        this.card.node = this.node;
+        this.label.string ="" +this.card.number+this.card.type;
+    }
 
 
 }

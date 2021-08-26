@@ -10,6 +10,7 @@ export default class GamePlay{
     constructor(){
         this.cardPool = new CardPool();
     }
+
 }
 
 export const Game_Play_ins = new GamePlay();

@@ -6,19 +6,38 @@ const {ccclass, property} = cc._decorator;
 export default class Card{
     
     
-    type:CardType;
+    private _type: CardType;
+    
 
-    number:number;
+    private _number: number;
+    
 
-    node:cc.Node;
+    private _node: cc.Node;
+    
 
     constructor(type:CardType,index:number){
         this.type = type;
         this.number = index;
     }
 
-    init(node:cc.Node){
-        this.node = node;
+    public get type(): CardType {
+        return this._type;
+    }
+    public set type(value: CardType) {
+        this._type = value;
     }
 
+    public get number(): number {
+        return this._number;
+    }
+    public set number(value: number) {
+        this._number = value;
+    }
+
+    public get node(): cc.Node {
+        return this._node;
+    }
+    public set node(value: cc.Node) {
+        this._node = value;
+    }
 }
