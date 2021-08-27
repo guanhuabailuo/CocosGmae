@@ -54,16 +54,21 @@ export default class CardNode extends cc.Component {
     }
 
     onSelect() {
+        if(this.tween){
+            this.tween.stop();
+        }
         this.tween =  cc.tween(this.border).to(1,{opacity:255}).to(1,{opacity:50}).to(1,{opacity:255}).start();
     }
 
     onTouchStart(event:cc.Event.EventTouch){
        event.card = this;
+       if(this.poolType == PoolType.SendPool){
+           this.onSelect();
+           EVENT.emit(EventId.Send_Card_Select,event);
+       }
     }
 
-    onTouchMove(event:cc.Event.EventTouch){
-
-    }
+    
 
     public get poolType(): PoolType {
         return this._poolType;

@@ -1,4 +1,7 @@
+import { EventId } from "../Define/EventId";
+import { EVENT } from "../Framework/Event/EventMgr";
 import Card from "./Card";
+import { ContinuousFilter } from "./WinFilter/Filter";
 
 export default class CardPool{
     
@@ -6,20 +9,40 @@ export default class CardPool{
 
     selectCards:Array<Card>;
 
+    filter:ContinuousFilter;
+
     constructor(){
         this.pool = new Array();
         for (let i = 0; i < 4; i++) {
             this.pool.push(new Array());
         }
         this.selectCards = new Array();
+        this.filter = new ContinuousFilter();
     }
 
     containCard(card:Card):boolean{
-      return this.selectCards.indexOf(card)!=-1
+        for (let i = 0; i < this.pool.length; i++) {
+            let littelPool = this.pool[i];
+            for (let j = 0; j < littelPool.length; j++) {
+                let current = littelPool[j];
+                if (current == card){
+                    return true;
+                }
+            }
+         }
+     return false;
+    }
+
+    join(card:Card,index?:number){
+        let idnex =  Math.floor(index/4);
+        if(index == 0){
+            console.info(idnex.toString(),(index - 4*idnex).toString())
+        }
+        this.pool[idnex][index - 4*idnex] = card; 
     }
 
     addSelectCard(card:Card){
-        if (this.containCard(card)) {
+        if (this.selectCards.indexOf(card)!=-1) {
             return;
         }
         this.selectCards.push(card);
@@ -58,7 +81,23 @@ export default class CardPool{
         if (b1) {
             this.pool[b1][b2] = a;
         }
+    }
+
+    checkComb(){
+        for (let i = 0; i < 4; i++) {
+             let littel = this.pool[i];
+            for (let j = 0; j < 2; j++) {
+                let first = littel[j];
+                let sencend = littel[j+1];
+                let three = littel[j+2];
+                let tag = this.filter.check(first,sencend,three);
+                if(tag.win == true){
+                    EVENT.emit(EventId.card_comb,tag);
+                }
+            }            
+        }
 
     }
+
 
 }
