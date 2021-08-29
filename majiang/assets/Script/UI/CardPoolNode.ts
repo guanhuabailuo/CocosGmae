@@ -24,7 +24,7 @@ export default class CardPoolNode extends cc.Component {
     onLoad(){
         this.node.on(cc.Node.EventType.TOUCH_START,this.onTouchStart,this,false);
         EVENT.on(EventId.Send_Card_Select,this.onTouchStart,this,false);
-        this.cardPool = new CardPool();
+        this.cardPool = new CardPool(7);
         EVENT.on(EventId.Exchange_Card_Start,this.onCardExchageStart,this,false);
         EVENT.on(EventId.Exchange_Card_End,this.onCardExchageEnd,this,false);
         EVENT.on(EventId.card_comb,this.onCardComb,this,false);

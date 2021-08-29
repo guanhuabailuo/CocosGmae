@@ -41,7 +41,7 @@ export default class GamePlayNode extends cc.Component {
     }
 
     start () {
-        for (let i = 0; i < 16; i++) {
+        for (let i = 0; i < 49; i++) {
             let cardNode =  this.createCardNode(CardType.tiao,i);
             this.gamePlay.cardPoolNode.join(cardNode.getComponent(CardNode),i);
         }

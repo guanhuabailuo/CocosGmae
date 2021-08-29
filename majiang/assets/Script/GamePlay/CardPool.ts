@@ -11,9 +11,12 @@ export default class CardPool{
 
     filter:ContinuousFilter;
 
-    constructor(){
+    size:number;
+
+    constructor(size:number){
+        this.size = size;
         this.pool = new Array();
-        for (let i = 0; i < 4; i++) {
+        for (let i = 0; i < size; i++) {
             this.pool.push(new Array());
         }
         this.selectCards = new Array();
@@ -34,11 +37,11 @@ export default class CardPool{
     }
 
     join(card:Card,index?:number){
-        let idnex =  Math.floor(index/4);
+        let idnex =  Math.floor(index/this.size);
         if(index == 0){
-            console.info(idnex.toString(),(index - 4*idnex).toString())
+            console.info(idnex.toString(),(index - this.size*idnex).toString())
         }
-        this.pool[idnex][index - 4*idnex] = card; 
+        this.pool[idnex][index - this.size*idnex] = card; 
     }
 
     addSelectCard(card:Card){
