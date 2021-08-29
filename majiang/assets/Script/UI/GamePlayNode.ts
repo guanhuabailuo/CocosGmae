@@ -5,9 +5,12 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import { EventId } from "../Define/EventId";
 import { CardType } from "../Define/Type";
+import { EVENT } from "../Framework/Event/EventMgr";
 import Card from "../GamePlay/Card";
 import GamePlay, { Game_Play_ins } from "../GamePlay/GamePlay";
+import { CombTag } from "../GamePlay/WinFilter/Filter";
 import CardNode from "./CardNode";
 import CardPoolNode from "./CardPoolNode";
 import SendCardPoolNode from "./SendCardPoolNode";
@@ -30,6 +33,12 @@ export default class GamePlayNode extends cc.Component {
     @property({type:cc.Node})
     winCardPoolNode:cc.Node = null;
 
+    @property({type:cc.Label})
+    leftCardNum:cc.Label;
+
+    @property({type:cc.Label})
+    score:cc.Label;
+
     gamePlay:GamePlay;
 
     allCard:Array<CardInfo>;
@@ -41,27 +50,45 @@ export default class GamePlayNode extends cc.Component {
         this.gamePlay.gamePlayNode = this;
         this.gamePlay.winCardPoolNode = this.winCardPoolNode.getComponent(WinCardPoolNode);
         cc.assetManager.loadBundle("Texture");
+        cc.assetManager.bundles
+
+        EVENT.on(EventId.card_comb,this.onCardComb,this,false);
+    }
+
+
+    onCardComb(tag:CombTag){
+
+        for (let i = 0; i < 3; i++) {
+            let index = tag.card[i].node.getSiblingIndex();
+            let cardInfo = this.allCard.pop();
+            let cardNode =  this.createCardNode(cardInfo.cardType,cardInfo.number,cardInfo.pic);
+            Game_Play_ins.winCardPoolNode.join(tag.card[i].node.getComponent(CardNode));
+            this.gamePlay.cardPoolNode.join(cardNode.getComponent(CardNode),index);
+        }
+        this.updateLeftCardUI();
     }
 
     createOneGroupCardInfo():Array<CardInfo>{
         let allCard:Array<CardInfo> = new Array();
         for (let i = 1; i < 4; i++) {
             for (let j = 1; j <= 9; j++) {
-                let cardInfo:CardInfo = {}; 
-                cardInfo.number = j
-                if(i == 1){
-                    cardInfo.cardType = CardType.tiao
-                    cardInfo.pic = "Card/tiao_"+j;
+                for (let k = 0; k < 4; k++) {
+                    let cardInfo:CardInfo = {}; 
+                    cardInfo.number = j
+                    if(i == 1){
+                        cardInfo.cardType = CardType.tiao
+                        cardInfo.pic = "Card/tiao_"+j;
+                    }
+                    if(i == 2){
+                        cardInfo.cardType = CardType.tong
+                        cardInfo.pic = "Card/tong_"+j;
+                    }
+                    if(i == 3){
+                        cardInfo.cardType = CardType.wan
+                        cardInfo.pic = "Card/wan_"+j;
+                    }
+                    allCard.push(cardInfo);
                 }
-                if(i == 2){
-                    cardInfo.cardType = CardType.tong
-                    cardInfo.pic = "Card/tong_"+j;
-                }
-                if(i == 3){
-                    cardInfo.cardType = CardType.wan
-                    cardInfo.pic = "Card/wan_"+j;
-                }
-                allCard.push(cardInfo);
             }
         }
 
@@ -103,16 +130,27 @@ export default class GamePlayNode extends cc.Component {
         let cardInfo = this.allCard.pop();
         let cardNode =  this.createCardNode(cardInfo.cardType,cardInfo.number,cardInfo.pic);
         this.gamePlay.sendCardPoolNode.join(cardNode.getComponent(CardNode));
+        this.updateLeftCardUI();
     }
 
-    createCardNode(cardType:CardType,num:number,path:string){
+    updateLeftCardUI(){
+        this.leftCardNum.string = "剩余牌数:"+this.allCard.length;
+    }
+
+
+
+
+
+    createCardNode(cardType:CardType,num:number,path?:string){
         let cardNode = cc.instantiate(this.card);
         let cardCp = cardNode.getComponent(CardNode);
-        cc.assetManager.loadBundle("Texture",(error,bundle)=>{
-            bundle.load<cc.SpriteFrame>(path,cc.SpriteFrame,(error,asset)=>{
-                cardCp.img.spriteFrame = asset;
+        if(path){
+            cc.assetManager.loadBundle("Texture",(error,bundle)=>{
+                bundle.load<cc.SpriteFrame>(path,cc.SpriteFrame,(error,asset)=>{
+                    cardCp.img.spriteFrame = asset;
+                })
             })
-        })
+        }
         let card:Card = new Card(cardType,num);
         cardCp.card = card;
         card.node = cardNode;

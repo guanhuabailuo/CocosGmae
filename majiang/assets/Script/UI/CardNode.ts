@@ -23,7 +23,7 @@ export default class CardNode extends cc.Component {
     border:cc.Node = null;
 
     @property({type:cc.Sprite})
-    img:cc.Sprite;
+    img:cc.Sprite = null;
 
     private _card: Card;
     

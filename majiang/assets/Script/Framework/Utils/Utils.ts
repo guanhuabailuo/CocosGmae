@@ -572,5 +572,26 @@ export default class Utils {
 
     }
 
+}
 
+export class RunManyCallBack{
+
+    count:number;
+    callCount:number;
+    callBack:Function;
+    target:any;
+
+    constructor(target:any,count,callBack:Function){
+        this.target = target;
+        this.count = count;
+        this.callBack = callBack;
+        this.callCount = 0;
+    }
+
+    oncall(){
+        this.callCount++;
+        if(this.callCount>=this.count){
+            this.callBack.apply(this.target);
+        }
+    }
 }
