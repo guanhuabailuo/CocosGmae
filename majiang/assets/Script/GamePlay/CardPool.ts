@@ -11,9 +11,12 @@ export default class CardPool{
 
     filter:ContinuousFilter;
 
-    constructor(){
+    size:number;
+
+    constructor(size:number){
+        this.size = size;
         this.pool = new Array();
-        for (let i = 0; i < 4; i++) {
+        for (let i = 0; i < size; i++) {
             this.pool.push(new Array());
         }
         this.selectCards = new Array();
@@ -34,11 +37,11 @@ export default class CardPool{
     }
 
     join(card:Card,index?:number){
-        let idnex =  Math.floor(index/4);
+        let idnex =  Math.floor(index/this.size);
         if(index == 0){
-            console.info(idnex.toString(),(index - 4*idnex).toString())
+            console.info(idnex.toString(),(index - this.size*idnex).toString())
         }
-        this.pool[idnex][index - 4*idnex] = card; 
+        this.pool[idnex][index - this.size*idnex] = card; 
     }
 
     addSelectCard(card:Card){
@@ -75,27 +78,56 @@ export default class CardPool{
             }
            }
         }
-        if (a1) {
+        if (a1 != undefined) {
             this.pool[a1][a2] = b;
         }
-        if (b1) {
+        if (b1 != undefined) {
             this.pool[b1][b2] = a;
         }
     }
 
     checkComb(){
-        for (let i = 0; i < 4; i++) {
-             let littel = this.pool[i];
-            for (let j = 0; j < 2; j++) {
-                let first = littel[j];
-                let sencend = littel[j+1];
-                let three = littel[j+2];
-                let tag = this.filter.check(first,sencend,three);
-                if(tag.win == true){
-                    EVENT.emit(EventId.card_comb,tag);
-                }
-            }            
+        let needCheckEnd = this.size - 2;
+        console.info("**********")
+        for (let i = 0; i < this.size; i++) {
+            let info =""
+           for (let j = 0; j < this.size; j++) {
+                info += this.pool[i][j].type+this.pool[i][j].number+" "
+           }
+           console.info(info);
         }
+
+
+        //横排
+        for (let i = 0; i < this.size; i++) {
+            for (let j = 0; j < needCheckEnd; j++) {
+                let first  = this.pool[i][j];
+                let second = this.pool[i][j+1];
+                let third = this.pool[i][j+2];
+                let tag1 = this.filter.check(first,second,third);
+                if(tag1.win){
+                    EVENT.emit(EventId.card_comb,tag1);
+                    return;
+                }
+                
+            }
+        }
+        console.info(111)
+        //竖排
+        for (let i = 0; i < needCheckEnd; i++) {
+            for (let j = 0; j <this.size; j++) {
+                let first  = this.pool[i][j];
+                let second = this.pool[i+1][j];
+                let third = this.pool[i+2][j];
+                let tag1 = this.filter.check(first,second,third);
+                if(tag1.win){
+                    EVENT.emit(EventId.card_comb,tag1);
+                    return;
+                }
+               
+            }
+        }
+
 
     }
 

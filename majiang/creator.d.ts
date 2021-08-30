@@ -18210,7 +18210,7 @@ declare namespace cc {
 		/** !#en The touch event
 		!#zh 触摸事件 */
 		export class EventTouch extends Event {
-            [x: string]: any;		
+            [x: string]: any;			
 			/**
 			
 			@param touchArr The array of the touches

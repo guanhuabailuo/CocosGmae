@@ -16,10 +16,8 @@ const {ccclass, property} = cc._decorator;
 export default class NewClass extends cc.Component {
     tags:Array<CombTag> = new Array();
     start () {
-
+        
     }
-
-    
 
     join(cardNode:CardNode){
         cardNode.poolType = PoolType.WinPool;
