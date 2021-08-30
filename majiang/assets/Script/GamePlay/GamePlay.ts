@@ -46,6 +46,9 @@ export default class GamePlay{
         this._winCardPoolNode = value;
     }
 
+    
+
+
 }
 
 export const Game_Play_ins = new GamePlay();

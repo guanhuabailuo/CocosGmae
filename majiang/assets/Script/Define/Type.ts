@@ -11,3 +11,16 @@ export enum PoolType{
     GamePool = "GamePool",
     WinPool = "WinPool",
 }
+
+
+export enum GameStatus{
+    Start = "start",
+    Run = "run",
+    gameOver = "gameOver",
+}
+
+export enum RoundStep{
+    DrawCard = "DrawCard",
+    ExchangeCard = "ExchangeCard",
+    Check = "Check"
+}
