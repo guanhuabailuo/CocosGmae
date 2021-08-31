@@ -20,6 +20,7 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class GamePlayNode extends cc.Component {
+    
 
     @property({type:cc.Prefab})
     card:cc.Prefab = null;
@@ -37,11 +38,13 @@ export default class GamePlayNode extends cc.Component {
     leftCardNum:cc.Label;
 
     @property({type:cc.Label})
-    score:cc.Label;
+    scoreLabel:cc.Label;
 
     gamePlay:GamePlay;
 
     allCard:Array<CardInfo>;
+
+    score:number = 0; 
 
     onLoad(){
         this.gamePlay = Game_Play_ins;
@@ -53,6 +56,12 @@ export default class GamePlayNode extends cc.Component {
         cc.assetManager.bundles
 
         EVENT.on(EventId.card_comb,this.onCardComb,this,false);
+
+        EVENT.on(EventId.addScore,this.addScore,this,false);
+    }
+    addScore(addScore:number) {
+       this.score += addScore;
+       this.scoreLabel.string = "分数:"+this.score;
     }
 
 
@@ -157,6 +166,12 @@ export default class GamePlayNode extends cc.Component {
         return cardNode;
     }
 
+    drawCard() {
+        let cardInfo = this.allCard.pop();
+        this.updateLeftCardUI();
+        let cardNode =  this.createCardNode(cardInfo.cardType,cardInfo.number,cardInfo.pic);
+        this.sendCardPoolNode.getComponent(SendCardPoolNode).join(cardNode.getComponent(CardNode));
+    }
     
 }
 

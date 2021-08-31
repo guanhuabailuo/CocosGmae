@@ -8,6 +8,7 @@
 import { CardType, PoolType } from "../Define/Type";
 import Card from "../GamePlay/Card";
 import CardPool from "../GamePlay/CardPool";
+import { Game_Play_ins } from "../GamePlay/GamePlay";
 import CardNode from "./CardNode";
 
 const {ccclass, property} = cc._decorator;
@@ -28,4 +29,11 @@ export default class SendCardPoolNode extends cc.Component {
         cardNode.node.setParent(this.node);
         cardNode.node.position = cc.Vec3.ZERO;
     }
+
+    skipCard(){
+        this.node.destroyAllChildren();
+        Game_Play_ins.gamePlayNode.drawCard();
+    }
+
+
 }

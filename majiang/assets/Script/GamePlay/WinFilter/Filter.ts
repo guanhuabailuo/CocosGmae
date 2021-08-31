@@ -74,3 +74,72 @@ export  class ContinuousFilter extends Filter{
         return tag;
     }
 }
+
+export interface WinTag{
+    cardType?:CardType;
+}
+
+export enum WinModle{
+
+    qingyise="qingyise",
+    duanyaojiu = "duanyaojiu",
+
+    none = "none",
+}
+
+
+
+export class WinFilter{
+
+    check(tag_1:CombTag,tag_2:CombTag,tag_3:CombTag,tag_4:CombTag):WinModle{
+
+        return WinModle.none;
+    }
+}
+
+export class qingyiseFilter extends WinFilter{
+
+    check(tag_1:CombTag,tag_2:CombTag,tag_3:CombTag,tag_4:CombTag):WinModle{
+        let winTag:WinTag = {} 
+        if(tag_1.cardtype == tag_2.cardtype && tag_2.cardtype == tag_3.cardtype && tag_3.cardtype == tag_4.cardtype){
+            winTag.cardType = tag_1.cardtype;
+            return WinModle.qingyise
+        }
+        return WinModle.none;
+    }
+}
+
+export class duanyaojiuFilter extends WinFilter{
+
+    check(tag_1:CombTag,tag_2:CombTag,tag_3:CombTag,tag_4:CombTag):WinModle{
+        let pass = true;
+        pass = pass&&this.checkTag(tag_1);
+        pass = pass&&this.checkTag(tag_2);
+        pass = pass&&this.checkTag(tag_3);
+        pass = pass&&this.checkTag(tag_4);
+        if(pass){
+            return WinModle.duanyaojiu;
+        }
+        return WinModle.none;
+    }
+
+    checkTag(tag:CombTag):boolean{
+        if(tag.cardtype == CardType.zi||tag.cardtype == CardType.feng){
+            return false;
+        }
+        if(tag.winType == CombType.peng){
+            if(tag.num == 1 || tag.num == 9){
+                return false;
+            }
+        }
+
+        if(tag.winType == CombType.lianzi){
+            if(tag.num == 2 || tag.num == 8){
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+}
