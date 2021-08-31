@@ -33,6 +33,9 @@ export  class ContinuousFilter extends Filter{
         if(!card_1||!card_2||!card_3){
             return tag;
         }
+        if(card_1.type == CardType.dead || card_1.type == CardType.empty || card_2.type == CardType.dead || card_2.type == CardType.empty||card_3.type == CardType.dead || card_3.type == CardType.empty ){
+            return tag;
+        }
 
         if(card_1.type != card_2.type || card_2.type != card_3.type){
             return tag;

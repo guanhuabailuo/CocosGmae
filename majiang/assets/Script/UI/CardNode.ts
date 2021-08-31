@@ -6,7 +6,7 @@
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import { EventId } from "../Define/EventId";
-import { PoolType } from "../Define/Type";
+import { CardType, PoolType } from "../Define/Type";
 import { EVENT } from "../Framework/Event/EventMgr";
 import Card from "../GamePlay/Card";
 
@@ -36,11 +36,12 @@ export default class CardNode extends cc.Component {
     
 
     start () {
-        this.node.on(cc.Node.EventType.TOUCH_START,this.onTouchStart,this,false);
+        if(this.card.type != CardType.dead){
+            this.node.on(cc.Node.EventType.TOUCH_START,this.onTouchStart,this,false);
+            EVENT.on(EventId.Exchange_Card_Start,this.onCardExchageStart,this,false);
+            EVENT.on(EventId.Exchange_Card_End,this.onCardExchageEnd,this,false)
+        }
         this.border.opacity = 0;
-        EVENT.on(EventId.Exchange_Card_Start,this.onCardExchageStart,this,false);
-        EVENT.on(EventId.Exchange_Card_End,this.onCardExchageEnd,this,false)
-        
     }
 
     onCardExchageStart(){
@@ -71,6 +72,9 @@ export default class CardNode extends cc.Component {
        }
     }
 
+    onDestroy(){
+        EVENT.targetOff(this);
+    }
     
 
     public get poolType(): PoolType {

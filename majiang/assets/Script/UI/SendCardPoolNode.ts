@@ -5,7 +5,9 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import { EventId } from "../Define/EventId";
 import { CardType, PoolType } from "../Define/Type";
+import { EVENT } from "../Framework/Event/EventMgr";
 import Card from "../GamePlay/Card";
 import CardPool from "../GamePlay/CardPool";
 import { Game_Play_ins } from "../GamePlay/GamePlay";
@@ -31,8 +33,7 @@ export default class SendCardPoolNode extends cc.Component {
     }
 
     skipCard(){
-        this.node.destroyAllChildren();
-        Game_Play_ins.gamePlayNode.drawCard();
+        EVENT.emit(EventId.skip_draw_card)
     }
 
 

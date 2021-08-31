@@ -14,6 +14,7 @@ import CardPool from "../GamePlay/CardPool";
 import GamePlay, { Game_Play_ins } from "../GamePlay/GamePlay";
 import { CombTag } from "../GamePlay/WinFilter/Filter";
 import CardNode from "./CardNode";
+import SendCardPoolNode from "./SendCardPoolNode";
 
 const {ccclass, property} = cc._decorator;
 
@@ -30,7 +31,6 @@ export default class CardPoolNode extends cc.Component {
         this.cardPool = new CardPool(7);
         EVENT.on(EventId.Exchange_Card_Start,this.onCardExchageStart,this,false);
         EVENT.on(EventId.Exchange_Card_End,this.onCardExchageEnd,this,false);
-        
         this.layout = this.getComponent(cc.Layout);
     }
 
@@ -95,13 +95,15 @@ export default class CardPoolNode extends cc.Component {
                 this.layout.enabled = true;
                 this.exchangeCardSiblingIndex(a,b);
                 this.cardPool.selectCards = new Array();
+                if(a.node.getComponent(CardNode).poolType == PoolType.SendPool||b.node.getComponent(CardNode).poolType == PoolType.SendPool){
+                    EVENT.emit(EventId.Send_Card_Exchange);
+                }
                 EVENT.emit(EventId.Exchange_Card_End)
-                this.cardPool.checkComb();
             })
-            let actionA = cc.tween(a.node).to(0.5,{position:posb}).call(()=>{
+            let actionA = cc.tween(a.node).to(0.5,{position:posb,scale:1.2}).to(0.1,{scale:1}).call(()=>{
                 callBack.oncall();
             }).start();
-            let actionB = cc.tween(b.node).to(0.5,{position:posa}).call(()=>{
+            let actionB = cc.tween(b.node).to(0.5,{position:posa,scale:1.2}).to(0.1,{scale:1}).call(()=>{
                 callBack.oncall();
             }).start();;
 

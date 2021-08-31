@@ -86,7 +86,7 @@ export default class CardPool{
         }
     }
 
-    checkComb(){
+    checkComb():boolean{
         let needCheckEnd = this.size - 2;
         console.info("**********")
         for (let i = 0; i < this.size; i++) {
@@ -107,7 +107,7 @@ export default class CardPool{
                 let tag1 = this.filter.check(first,second,third);
                 if(tag1.win){
                     EVENT.emit(EventId.card_comb,tag1);
-                    return;
+                    return true;
                 }
                 
             }
@@ -122,13 +122,12 @@ export default class CardPool{
                 let tag1 = this.filter.check(first,second,third);
                 if(tag1.win){
                     EVENT.emit(EventId.card_comb,tag1);
-                    return;
+                    return true;
                 }
                
             }
         }
-
-
+        return false;
     }
 
 

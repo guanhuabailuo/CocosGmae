@@ -6,5 +6,7 @@ export enum EventId {
     Send_Card_Select = "Send_Card_Select",
     card_comb = "card_comb",
     win = "win",
-    addScore = "addScore"
+    addScore = "addScore",
+    game_animation_start = "game_animation_start",
+    game_animation_end = "game_animation_end"
 }

@@ -1,4 +1,6 @@
 export enum CardType{
+    empty = "empty",
+    dead = "dead",
     wan="wan",
     tong="tong",
     tiao="tiao",

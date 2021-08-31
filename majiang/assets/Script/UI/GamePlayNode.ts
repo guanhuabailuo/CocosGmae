@@ -11,6 +11,10 @@ import { EVENT } from "../Framework/Event/EventMgr";
 import Card from "../GamePlay/Card";
 import GamePlay, { Game_Play_ins } from "../GamePlay/GamePlay";
 import { CombTag } from "../GamePlay/WinFilter/Filter";
+import BaseState, { StateStatus } from "../StateMachine/BaseState";
+import CheckCardState from "../StateMachine/CheckCardState";
+import DrawCardState from "../StateMachine/DrawCardState";
+import ExchangeCardState from "../StateMachine/ExchangeCardState";
 import CardNode from "./CardNode";
 import CardPoolNode from "./CardPoolNode";
 import SendCardPoolNode from "./SendCardPoolNode";
@@ -40,11 +44,21 @@ export default class GamePlayNode extends cc.Component {
     @property({type:cc.Label})
     scoreLabel:cc.Label;
 
+    @property({type:cc.Button})
+    skipBtn:cc.Button;
+
     gamePlay:GamePlay;
 
     allCard:Array<CardInfo>;
 
-    score:number = 0; 
+    allCardNode:Array<cc.Node>;
+    allEmptyCardNode:Array<cc.Node>;
+
+    score:number = 0;
+    
+    states:Array<BaseState>;
+
+    currentStateIndex:number = 0 ;
 
     onLoad(){
         this.gamePlay = Game_Play_ins;
@@ -58,6 +72,32 @@ export default class GamePlayNode extends cc.Component {
         EVENT.on(EventId.card_comb,this.onCardComb,this,false);
 
         EVENT.on(EventId.addScore,this.addScore,this,false);
+
+        this.states = new Array();
+
+        this.states.push(new DrawCardState(this.skipBtn));
+
+        this.states.push(new ExchangeCardState());
+
+        this.states.push(new CheckCardState());
+
+        this.currentStateIndex = 0;
+
+        this.allCardNode = new Array();
+        this.allEmptyCardNode = new Array();
+        this.allCard = this.createOneGroupCardInfo();
+        this.allCard.sort((a,b)=>{
+            return Math.random()-0.5;
+        })
+        let emptyCardInfo:CardInfo = {number:-1,cardType:CardType.empty,pic:"Card/back"}
+        for (let i = 0; i < this.allCard.length; i++) {
+            const CardInfo = this.allCard[i];
+            let cardNode =  this.createCardNode(CardInfo.cardType,CardInfo.number,CardInfo.pic);
+            let emptyNode = this.createCardNode(emptyCardInfo.cardType,emptyCardInfo.number,emptyCardInfo.pic);
+            this.allCardNode.push(cardNode)
+            this.allEmptyCardNode.push(emptyNode)
+        }
+
     }
     addScore(addScore:number) {
        this.score += addScore;
@@ -66,16 +106,34 @@ export default class GamePlayNode extends cc.Component {
 
 
     onCardComb(tag:CombTag){
-
         for (let i = 0; i < 3; i++) {
             let index = tag.card[i].node.getSiblingIndex();
-            let cardInfo = this.allCard.pop();
-            let cardNode =  this.createCardNode(cardInfo.cardType,cardInfo.number,cardInfo.pic);
+            let cardNode =  this.allEmptyCardNode.pop();
             Game_Play_ins.winCardPoolNode.join(tag.card[i].node.getComponent(CardNode));
             this.gamePlay.cardPoolNode.join(cardNode.getComponent(CardNode),index);
         }
         this.updateLeftCardUI();
     }
+
+    update(dt){
+        if(this.states[this.currentStateIndex].status == StateStatus.none){
+            this.states[this.currentStateIndex].start();
+        }
+        if(this.states[this.currentStateIndex].status == StateStatus.running){
+            this.states[this.currentStateIndex].update(dt);
+        }
+        if(this.states[this.currentStateIndex].status == StateStatus.end){
+            this.states[this.currentStateIndex].end();
+            this.states[this.currentStateIndex].reset();
+            this.currentStateIndex++;
+            if(this.currentStateIndex == 3){
+                this.currentStateIndex = 0;
+            }
+        }
+    }
+
+
+
 
     createOneGroupCardInfo():Array<CardInfo>{
         let allCard:Array<CardInfo> = new Array();
@@ -125,30 +183,31 @@ export default class GamePlayNode extends cc.Component {
 
 
     start () {
-        this.allCard = this.createOneGroupCardInfo();
-        this.allCard.sort((a,b)=>{
-            return Math.random()-0.5;
-        })
+        
 
+        const deadCard:Array<CardInfo> = new Array;
+        let deadCardInfo = {number:-1,cardType:CardType.dead,pic:"back/bg_game_huge_1"}
+        deadCard[23] = deadCardInfo;
+        deadCard[24] = deadCardInfo;
+        deadCard[25] = deadCardInfo;
 
         for (let i = 0; i < 49; i++) {
-            let cardInfo = this.allCard.pop();
-            let cardNode =  this.createCardNode(cardInfo.cardType,cardInfo.number,cardInfo.pic);
-            this.gamePlay.cardPoolNode.join(cardNode.getComponent(CardNode),i);
+            let cardNode:cc.Node = null;
+            if(deadCard[i]){
+                 cardNode = this.createCardNode(deadCardInfo.cardType,deadCardInfo.number,deadCardInfo.pic);; 
+            }else{
+                cardNode = this.allCardNode.pop();
+            }
+            
+            let cp = cardNode.getComponent(CardNode);
+            this.gamePlay.cardPoolNode.join(cp,i);
         }
-        let cardInfo = this.allCard.pop();
-        let cardNode =  this.createCardNode(cardInfo.cardType,cardInfo.number,cardInfo.pic);
-        this.gamePlay.sendCardPoolNode.join(cardNode.getComponent(CardNode));
         this.updateLeftCardUI();
     }
 
     updateLeftCardUI(){
         this.leftCardNum.string = "剩余牌数:"+this.allCard.length;
     }
-
-
-
-
 
     createCardNode(cardType:CardType,num:number,path?:string){
         let cardNode = cc.instantiate(this.card);
@@ -167,9 +226,8 @@ export default class GamePlayNode extends cc.Component {
     }
 
     drawCard() {
-        let cardInfo = this.allCard.pop();
         this.updateLeftCardUI();
-        let cardNode =  this.createCardNode(cardInfo.cardType,cardInfo.number,cardInfo.pic);
+        let cardNode =  this.allCardNode.pop();
         this.sendCardPoolNode.getComponent(SendCardPoolNode).join(cardNode.getComponent(CardNode));
     }
     
