@@ -1,0 +1,17 @@
+{
+    "port": 10165,
+    "host":"",
+    "proto":"http",
+    "logger": true,
+    "db": true,
+    "Swagger": true,
+    "norpcs":false,
+    "gm":true,
+    "center": [
+        "loadBalanceServe"
+    ],
+    "backend": [
+        "gameServe","rankServe","rankModel"
+    ],
+    "frontend": ["webServe","socketServe"]
+}

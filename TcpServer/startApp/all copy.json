@@ -1,0 +1,15 @@
+{
+    "port": 10165,
+    "host":"127.0.0.1",
+    "proto":"http",
+    "logger": true,
+    "db": true,
+    "Swagger": true,
+    "center": [
+        "loadBalanceServe"
+    ],
+    "backend": [
+        "userServe"
+    ],
+    "frontend": ["webServe"]
+}

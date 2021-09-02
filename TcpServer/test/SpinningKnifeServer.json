@@ -1,0 +1,13 @@
+{
+    "name" : "SpinningKnifeServer",
+    "script": "bin/index.js",
+     "args":["startApp/all.json"],
+        "node_args"     :["--inspect=0.0.0.0:21083"],
+    "log_date_format"  : "YYYY-MM-DD HH:mm Z",
+    "ignoreWatch" : ["[\\/\\\\]\\./", "node_modules"],
+    "watch"       : false,
+    "cwd"         : "/var/lib/jenkins/workspace/SpinningKnifeServer",
+    "env": {
+        "NODE_ENV": "production"
+    }
+  }

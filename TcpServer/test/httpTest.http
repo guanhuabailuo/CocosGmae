@@ -1,0 +1,58 @@
+
+@token = 89bbdef02fbbb81638fa502d41a0e3e8
+@gameId = lz0055
+
+@level = 4
+
+#@ip = 10.2.1.10
+@ip = 127.0.0.1
+@prot = 11075
+
+###
+GET  http://{{ip}}:{{prot}}/player/login?gameId={{gameId}} HTTP/1.1
+### 开始关卡
+GET  http://{{ip}}:{{prot}}/player/startLevel?gameId={{gameId}}&token={{token}}&level={{level}} HTTP/1.1
+### 关卡成功
+GET http://{{ip}}:{{prot}}/player/levelSuccessed?gameId={{gameId}}&token={{token}}&level={{level}}&killNum=1 HTTP/1.1
+### 失败
+GET http://{{ip}}:{{prot}}/player/levelFailed?gameId={{gameId}}&token={{token}}&level={{level}}&killNum=10 HTTP/1.1
+
+### 领取挂机奖励
+GET http://{{ip}}:{{prot}}/player/drawContinueReward?gameId={{gameId}}&token={{token}} HTTP/1.1
+
+### 开启挂机奖励
+GET http://{{ip}}:{{prot}}/player/openContinueReward?gameId={{gameId}}&token={{token}} HTTP/1.1
+
+### 升级飞刀
+GET http://{{ip}}:{{prot}}/player/knifeLevelUp?gameId={{gameId}}&token={{token}} HTTP/1.1
+
+### 升级玩家模型
+GET http://{{ip}}:{{prot}}/player/playerModelLevelUp?gameId={{gameId}}&token={{token}}&modelId=0 HTTP/1.1
+
+### 变更玩家模型
+GET http://{{ip}}:{{prot}}/player/playerModelChange?gameId={{gameId}}&token={{token}}&modelId=2 HTTP/1.1
+
+### 领取每日奖励
+GET http://{{ip}}:{{prot}}/player/drawDailyReward?gameId={{gameId}}&token={{token}} HTTP/1.1
+
+@secret = 2451asdqwefs#
+@itemid = 1
+@num = 10000
+@param1 = 
+@param2 = 
+### gm发送道具
+GET http://{{ip}}:{{prot}}/player/gmSendItem?gameId={{gameId}}&token={{token}}&itemId={{itemid}}&num={{num}}&param1={{param1}}&param2={{param2}} HTTP/1.1
+
+### 获取配置
+@configName = Daily
+@idStart = 1
+@idEnd = 999
+GET http://{{ip}}:{{prot}}/resource/getConfig?configName={{configName}}&idStart={{idStart}}&idEnd={{idEnd}} HTTP/1.1
+
+### 获取排行榜
+@start = 0
+@end = 10
+GET http://{{ip}}:{{prot}}/rank/getRank?gameId={{gameId}}&start={{start}}&end={{end}} HTTP/1.1
+
+###
+GET  http://{{ip}}:{{prot}}/reloadConfig HTTP/1.1
