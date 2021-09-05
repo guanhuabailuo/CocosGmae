@@ -20,6 +20,9 @@ export default class NewClass extends cc.Component {
     
     filters:Array<WinFilter> = new Array();
 
+    @property({type:cc.Node})
+    root:cc.Node = null;
+
     onLoad(){
         this.filters.push(new qingyiseFilter());
         this.filters.push(new duanyaojiuFilter());
@@ -32,7 +35,7 @@ export default class NewClass extends cc.Component {
     join(cardNode:CardNode){
         cardNode.poolType = PoolType.WinPool;
         cardNode.node.scale = 0.5;
-        cardNode.node.setParent(this.node);
+        cardNode.node.setParent(this.root);
     }
 
     onCardComb(tag:CombTag){
@@ -47,7 +50,7 @@ export default class NewClass extends cc.Component {
                 }
             }
             this.tags = new Array();
-            this.node.destroyAllChildren();
+            this.root.destroyAllChildren();
             EVENT.emit(EventId.win,winTags);
         }
     }
