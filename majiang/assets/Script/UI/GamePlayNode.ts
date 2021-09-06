@@ -5,6 +5,7 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import ConfigNode from "../Config/ConfigNode";
 import { EventId } from "../Define/EventId";
 import { CardType } from "../Define/Type";
 import { EVENT } from "../Framework/Event/EventMgr";
@@ -98,10 +99,13 @@ export default class GamePlayNode extends cc.Component {
             this.allEmptyCardNode.push(emptyNode)
         }
 
+        this.updateLeftCardUI()
+        this.addScore(0);
     }
+
     addScore(addScore:number) {
        this.score += addScore;
-       this.scoreLabel.string = "分数:"+this.score;
+       this.scoreLabel.string = ""+this.score;
     }
 
 
@@ -187,10 +191,13 @@ export default class GamePlayNode extends cc.Component {
 
         const deadCard:Array<CardInfo> = new Array;
         let deadCardInfo = {number:-1,cardType:CardType.dead,pic:"back/bg_game_huge_1"}
-        deadCard[23] = deadCardInfo;
-        deadCard[24] = deadCardInfo;
-        deadCard[25] = deadCardInfo;
 
+        let levelConfig = ConfigNode.INS.getCurrentLevelConfig();
+        for (let i = 0; i < levelConfig.dead.length; i++) {
+            const element = levelConfig.dead[i];
+            deadCard[element] = deadCardInfo;
+            
+        }
         for (let i = 0; i < 49; i++) {
             let cardNode:cc.Node = null;
             if(deadCard[i]){
@@ -206,7 +213,7 @@ export default class GamePlayNode extends cc.Component {
     }
 
     updateLeftCardUI(){
-        this.leftCardNum.string = "剩余牌数:"+this.allCard.length;
+        this.leftCardNum.string = this.allCard.length+"";
     }
 
     createCardNode(cardType:CardType,num:number,path?:string){

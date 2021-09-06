@@ -21,7 +21,15 @@ export default class NewClass extends cc.Component {
     filters:Array<WinFilter> = new Array();
 
     @property({type:cc.Node})
-    root:cc.Node = null;
+    root1:cc.Node = null;
+    @property({type:cc.Node})
+    root2:cc.Node = null;
+    @property({type:cc.Node})
+    root3:cc.Node = null;
+    @property({type:cc.Node})
+    root4:cc.Node = null;
+
+    index:number = 0; 
 
     onLoad(){
         this.filters.push(new qingyiseFilter());
@@ -34,8 +42,22 @@ export default class NewClass extends cc.Component {
 
     join(cardNode:CardNode){
         cardNode.poolType = PoolType.WinPool;
-        cardNode.node.scale = 0.5;
-        cardNode.node.setParent(this.root);
+        cardNode.node.scale = 0.7;
+        let index = Math.floor(this.index/3);
+        console.info(index);
+        if(index == 0){
+            cardNode.node.setParent(this.root1);
+        }
+        if(index == 1){
+            cardNode.node.setParent(this.root2);
+        }
+        if(index == 2){
+            cardNode.node.setParent(this.root3);
+        }
+        if(index == 3){
+            cardNode.node.setParent(this.root4);
+        }
+        this.index ++;
     }
 
     onCardComb(tag:CombTag){
@@ -49,8 +71,12 @@ export default class NewClass extends cc.Component {
                     winTags.push(winTag);
                 }
             }
+            this.index = 0;
             this.tags = new Array();
-            this.root.destroyAllChildren();
+            this.root1.destroyAllChildren();
+            this.root2.destroyAllChildren();
+            this.root3.destroyAllChildren();
+            this.root4.destroyAllChildren();
             EVENT.emit(EventId.win,winTags);
         }
     }
