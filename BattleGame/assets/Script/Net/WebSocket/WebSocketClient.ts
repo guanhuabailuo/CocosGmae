@@ -14,6 +14,7 @@ export default class WebSocketClient{
     _rtt:number = 150;
 
     _reConnTimer = null as any;
+
     _uuid:string;
 
     onOpen:((ServerPackage:ServerPackage)=>{})|null;
@@ -24,8 +25,8 @@ export default class WebSocketClient{
     
     listenerMap:Map<ResponseCode,Listner>
 
-    constructor(host:string,port:number){
-        
+    constructor(host:string,port:number,uuid:string){
+        this._uuid = uuid;
         this._port = port;
         this._host = host;
         this._status = SocketStatus.none;
@@ -62,7 +63,7 @@ export default class WebSocketClient{
         if(this.regisetr){
             this.regisetr();
         }else{
-           let _package = new ClientPackage(RequestCode.regiset,{});
+           let _package = new ClientPackage(RequestCode.regiset,{uuid:this._uuid});
            this._ws.send(_package.encode());
         }
     }
@@ -88,7 +89,6 @@ export default class WebSocketClient{
     }
     onRegisetred(_package: ServerPackage) {
         this._status = SocketStatus.regisetred;
-        this._uuid = _package.data.uuid;
         if(this.onClientRegisetred){
             this.onClientRegisetred(_package);
         }
