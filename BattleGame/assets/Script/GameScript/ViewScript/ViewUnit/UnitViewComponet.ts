@@ -6,6 +6,7 @@
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import BaseViewComponet from "../BaseViewComponet";
+import UnitMoveComponet from "./UnitMoveComponet";
 
 const {ccclass, property} = cc._decorator;
 
@@ -14,7 +15,21 @@ export default class UnitViewComponet extends BaseViewComponet {
 
 
     gameUpdate(dt:number){
+        
+    }
 
+    reuse(){
+        let moveCp = this.getComponent(UnitMoveComponet);
+        if(moveCp){
+            moveCp.reuse();
+        }
+    }
+
+    unuse(){
+        let moveCp = this.getComponent(UnitMoveComponet);
+        if(moveCp){
+            moveCp.unuse();
+        }
     }
 
 }

@@ -5,6 +5,7 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import GameData from "../GameScript/GameData/GameData";
 import { ResponseCode } from "./WebSocket/Code";
 import WebSocketClient, { ClientPackage, ServerPackage } from "./WebSocket/WebSocketClient";
 
@@ -19,12 +20,13 @@ export default class NetNode extends cc.Component {
     @property({type:cc.Label})
     NetlagLabel:cc.Label = null;
 
+    onLoad(){
+        cc.director.getPhysicsManager().enabled = true;
+        cc.director.getPhysicsManager().gravity = cc.v2();
+        cc.view.setOrientation(cc.macro.ORIENTATION_LANDSCAPE)
+    }
     start () {
-        NetNode.client = new WebSocketClient("127.0.0.1",17099);
-        NetNode.client.startConn();
-        this.schedule(()=>{
-            this.updateNetlag();
-        },3)
+        
     }
 
     updateNetlag(){
@@ -43,11 +45,20 @@ export default class NetNode extends cc.Component {
         NetNode.client.removeListener(code,listner,target);
     };
 
+    updateGameId(editbox){
+        GameData.INS.uuid = editbox.string;
 
-    startRoom(){
-        cc.game.addPersistRootNode(this.node);
-        cc.director.loadScene("Room");
     }
 
-
+    startRoom(){
+        NetNode.client = new WebSocketClient("10.2.1.237",17099,GameData.INS.uuid);
+        NetNode.client.onClientRegisetred = ()=>{
+            cc.game.addPersistRootNode(this.node);
+            cc.director.loadScene("Room");
+        };
+        NetNode.client.startConn();
+        this.schedule(()=>{
+            this.updateNetlag();
+        },3)
+    }
 }

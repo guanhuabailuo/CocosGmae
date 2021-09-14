@@ -1,5 +1,6 @@
 import BaseLogicAction from "../LogicAction/BaseLogicAction";
 import MoveAction from "../LogicAction/MoveAction";
+import PositionAction from "../LogicAction/PositionAction";
 
 export default class BaseUnit{
     
@@ -22,7 +23,7 @@ export default class BaseUnit{
 
     }
 
-    destory(dt:number){
+    onDestory(){
 
     }
 
@@ -30,16 +31,25 @@ export default class BaseUnit{
         if(action instanceof MoveAction){
             this.handlerMoveAction(action);
         }
+        if(action instanceof PositionAction){
+            this.handlerPositionAction(action);
+        }
     }
 
     handlerMoveAction(action:MoveAction){
 
     }
 
+    handlerPositionAction(action:PositionAction){
+
+    }
+
 }
 
-export enum UnitType{
+
+export enum UnitType {
     Player = "player",
     Wall = "Wall",
     Monster = "Monster",
+    Bullet = "Bullet"
 }

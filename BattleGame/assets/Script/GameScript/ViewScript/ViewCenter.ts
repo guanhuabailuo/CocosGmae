@@ -5,8 +5,11 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import GameCenter from "../GameCenter";
+import { UnitType } from "../LogicScript/Unit/BaseUnit";
 import BaseViewComponet from "./BaseViewComponet";
 import BaseViewAction from "./ViewAction/BaseViewAction";
+import DestoryViewAction from "./ViewAction/DestoryViewAction";
 import MoveViewAction from "./ViewAction/MoveViewAction";
 import UnitViewComponet from "./ViewUnit/UnitViewComponet";
 
@@ -47,6 +50,12 @@ export default class ViewCenter extends BaseViewComponet {
     handlerActionQueen(){
         while(this.actionQueen.length>0){
            const action =  this.actionQueen.pop();
+
+           if(action instanceof DestoryViewAction){
+               this.removeUnit(action.targetUid);
+               continue;
+           }
+
            const cp = this.nodeMap.get(action.targetUid);
            if(cp){
             cp.handlerAction(action);
@@ -55,6 +64,19 @@ export default class ViewCenter extends BaseViewComponet {
            }
            
         }
+    }
+
+    removeUnit(unitId:string){
+       let cp =  this.nodeMap.get(unitId);
+       this.nodeMap.delete(unitId);
+       if(cp){
+           if(cp.type == UnitType.Bullet){
+               GameCenter.GAME_CENTER.retuenBulletPool(cp.node);
+           }
+           if(cp.type == UnitType.Monster){
+            GameCenter.GAME_CENTER.retuenMonsterPool(cp.node);
+        }
+       }
     }
 
     addUnit(cp: UnitViewComponet,position:cc.Vec3) {

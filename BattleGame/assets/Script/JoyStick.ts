@@ -6,6 +6,7 @@
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import GameCenter from "./GameScript/GameCenter";
+import GameData from "./GameScript/GameData/GameData";
 import MoveAction from "./GameScript/LogicScript/LogicAction/MoveAction";
 
 const {ccclass, property} = cc._decorator;
@@ -99,8 +100,8 @@ export default class JoyStick extends cc.Component {
             //获取弧度
             this.angle = Math.atan2(this.btn.y, this.btn.x);
             
-            const action:MoveAction = new MoveAction(1+"",this.dir);
-           GameCenter.GAME_CENTER.pushLoginAction(action)
+            const action:MoveAction = new MoveAction(GameData.INS.uuid,this.dir);
+           GameCenter.GAME_CENTER.pushLogicAction(action)
         }
     }
 

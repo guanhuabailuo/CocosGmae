@@ -1,15 +1,49 @@
 {
+  "group-list": [
+    "default",
+    "Player",
+    "PlayerBullet",
+    "MonsterBullet",
+    "Monster"
+  ],
   "collision-matrix": [
     [
+      false
+    ],
+    [
+      false,
+      false,
+      null,
+      true,
       true
+    ],
+    [
+      false,
+      false,
+      false,
+      null,
+      true
+    ],
+    [
+      false,
+      true,
+      false,
+      false
+    ],
+    [
+      false,
+      true,
+      true,
+      false,
+      false
     ]
   ],
-  "excluded-modules": [],
-  "group-list": [
-    "default"
+  "excluded-modules": [
+    "3D Physics/Builtin"
   ],
-  "design-resolution-width": 1920,
-  "design-resolution-height": 1080,
+  "preview-port": 7456,
+  "design-resolution-width": 960,
+  "design-resolution-height": 640,
   "fit-width": false,
   "fit-height": true,
   "use-project-simulator-setting": false,
@@ -19,8 +53,7 @@
     "height": 640,
     "width": 960
   },
-  "last-module-event-record-time": 0,
-  "assets-sort-type": "name",
+  "clear-simulator-cache": true,
   "facebook": {
     "appID": "",
     "audience": {
@@ -30,7 +63,5 @@
     "live": {
       "enable": false
     }
-  },
-  "preview-port": 7456,
-  "clear-simulator-cache": true
+  }
 }
