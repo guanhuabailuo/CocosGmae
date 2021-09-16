@@ -75,8 +75,8 @@
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
-    "_groupIndex": 0,
-    "groupIndex": 0,
+    "_groupIndex": 5,
+    "groupIndex": 5,
     "_id": ""
   },
   {
@@ -112,7 +112,7 @@
     "_id": ""
   },
   {
-    "__type__": "a078coQSMJDTKwMUJXpalzr",
+    "__type__": "748519HZMtKv5/os7I/e/tH",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -148,7 +148,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "389ae0fa-0f7b-4285-b3db-b37dba2cb712"
     },
     "fileId": "",
     "sync": false

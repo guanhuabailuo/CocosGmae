@@ -8,6 +8,7 @@
 import NetNode from '../../Net/NetNode'
 import { RequestCode, RoomTickType } from '../../Net/WebSocket/Code'
 import { ClientPackage, ServerPackage } from '../../Net/WebSocket/WebSocketClient'
+import GameCenter from '../GameCenter'
 import GameData from '../GameData/GameData'
 import BaseLogicAction from './LogicAction/BaseLogicAction'
 import DestoryUnitAction from './LogicAction/DestoryUnitAction'
@@ -129,6 +130,10 @@ export default class LogicCenter {
                     let position = new cc.Vec3(tick.position.x, tick.position.y, 0)
                     let positionAction: PositionAction = new PositionAction(uuid, position)
                     this.pushAction(positionAction)
+                }
+                if(tick.type === RoomTickType.Create_Knife){
+                    let position = new cc.Vec3(tick.position.x, tick.position.y, 0)
+                    GameCenter.GAME_CENTER.createKnife(position);
                 }
             }
         }

@@ -51,5 +51,6 @@ export enum UnitType {
     Player = "player",
     Wall = "Wall",
     Monster = "Monster",
-    Bullet = "Bullet"
+    Bullet = "Bullet",
+    Knife = "Knife"
 }

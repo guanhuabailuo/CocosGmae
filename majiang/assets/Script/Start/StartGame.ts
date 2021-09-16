@@ -5,6 +5,8 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import ConfigNode from "../Config/ConfigNode";
+
 const {ccclass, property} = cc._decorator;
 
 @ccclass
@@ -15,7 +17,11 @@ export default class NewClass extends cc.Component {
     }
 
     StartGame(){
-        cc.director.loadScene("helloworld")
+        ConfigNode.INS.removeCanvas();
+        cc.game.addPersistRootNode(ConfigNode.INS.node);
+        cc.director.loadScene("helloworld",()=>{
+            //ConfigNode.INS.joinCanvas();
+        })
     }
    
 }

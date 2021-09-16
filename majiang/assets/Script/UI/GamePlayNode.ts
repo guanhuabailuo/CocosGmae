@@ -67,8 +67,6 @@ export default class GamePlayNode extends cc.Component {
         this.gamePlay.sendCardPoolNode = this.sendCardPoolNode.getComponent(SendCardPoolNode);
         this.gamePlay.gamePlayNode = this;
         this.gamePlay.winCardPoolNode = this.winCardPoolNode.getComponent(WinCardPoolNode);
-        cc.assetManager.loadBundle("Texture");
-        cc.assetManager.bundles
 
         EVENT.on(EventId.card_comb,this.onCardComb,this,false);
 

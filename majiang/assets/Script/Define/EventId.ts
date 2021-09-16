@@ -8,5 +8,7 @@ export enum EventId {
     win = "win",
     addScore = "addScore",
     game_animation_start = "game_animation_start",
-    game_animation_end = "game_animation_end"
+    game_animation_end = "game_animation_end",
+    open_setting_view = "open_setting_view",
+    Button_touch = "Button_touch"
 }

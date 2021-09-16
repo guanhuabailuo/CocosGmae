@@ -32,6 +32,5 @@
     }
   },
   "preview-port": 7456,
-  "clear-simulator-cache": true,
-  "start-scene": "1682eb5c-f406-46e9-b38c-f8019858dc17"
+  "clear-simulator-cache": true
 }

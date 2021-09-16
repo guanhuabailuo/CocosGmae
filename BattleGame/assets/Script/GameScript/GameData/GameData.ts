@@ -8,9 +8,10 @@ export default class GameData{
 
     private _roomId: number;
     
-    
-    
     static INS = new GameData();
+
+    private _isMaster = false;
+   
 
     constructor(){
 
@@ -28,6 +29,7 @@ export default class GameData{
     }
     public set roomeDate(value: RoomData) {
         this._roomeDate = value;
+        this._isMaster =  this.roomeDate.members[0].uuid == this.uuid
     }
 
     public get roomId(): number {
@@ -35,6 +37,13 @@ export default class GameData{
     }
     public set roomId(value: number) {
         this._roomId = value;
+    }
+
+    public get isMaster() {
+        return this._isMaster;
+    }
+    public set isMaster(value) {
+        this._isMaster = value;
     }
 }
 

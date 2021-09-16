@@ -36,7 +36,7 @@ export default class Player extends BaseUnit{
             this._posChange = false;
         }
         if(this._AttackTimer){
-            this._AttackTimer.update(dt);
+            //this._AttackTimer.update(dt);
         }
     }
 

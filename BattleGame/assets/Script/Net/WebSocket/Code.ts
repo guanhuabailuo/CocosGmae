@@ -34,6 +34,7 @@ export interface RoomMember{
 
 
 export enum RoomTickType{
-    posiiton = "posiiton"
+    posiiton = "posiiton",
+    Create_Knife = "Create_Knife",
 
 }

@@ -42,6 +42,7 @@ export default class RingLaout extends cc.Component {
         this._childCount = this.node.childrenCount;
         this._currentAngle = this.startAngle;
         this._startAngle = this.startAngle;
+        
     }
 
     update(dt){

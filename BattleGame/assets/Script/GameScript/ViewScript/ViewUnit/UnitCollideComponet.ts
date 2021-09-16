@@ -13,11 +13,11 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class UnitCollideComponet extends cc.Component {
 
-    collisionEnter:((other:cc.Node,self:cc.Node)=>void);
+    collisionEnter:((other:cc.BoxCollider,self:cc.BoxCollider)=>void);
     
     target:any;
 
-    init(target:any,collisionEnter:(other:cc.Node,self:cc.Node)=>void){
+    init(target:any,collisionEnter:(other:cc.BoxCollider,self:cc.BoxCollider)=>void){
         this.target = target;
         this.collisionEnter = collisionEnter;
     }
@@ -34,7 +34,7 @@ export default class UnitCollideComponet extends cc.Component {
        
     }
 
-    onCollisionEnter(other:cc.Node,self:cc.Node){
+    onCollisionEnter(other:cc.BoxCollider,self:cc.BoxCollider){
         this.collisionEnter.call(this.target,other,self);
     }
     

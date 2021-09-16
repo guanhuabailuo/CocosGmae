@@ -4,7 +4,9 @@
     "Player",
     "PlayerBullet",
     "MonsterBullet",
-    "Monster"
+    "Monster",
+    "knifeOnBlock",
+    "KnifeOnPlayer"
   ],
   "collision-matrix": [
     [
@@ -14,7 +16,8 @@
       false,
       false,
       null,
-      true,
+      false,
+      false,
       true
     ],
     [
@@ -22,20 +25,38 @@
       false,
       false,
       null,
+      false
+    ],
+    [
+      false,
+      false,
+      false,
+      false
+    ],
+    [
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    [
+      false,
+      true,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
       true
-    ],
-    [
-      false,
-      true,
-      false,
-      false
-    ],
-    [
-      false,
-      true,
-      true,
-      false,
-      false
     ]
   ],
   "excluded-modules": [
@@ -63,5 +84,6 @@
     "live": {
       "enable": false
     }
-  }
+  },
+  "start-scene": "60f6cd14-7b22-4bf9-ac3e-678c3ccedf6e"
 }
