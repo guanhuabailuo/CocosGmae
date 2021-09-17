@@ -67,8 +67,6 @@ export default class GamePlayNode extends cc.Component {
         this.gamePlay.sendCardPoolNode = this.sendCardPoolNode.getComponent(SendCardPoolNode);
         this.gamePlay.gamePlayNode = this;
         this.gamePlay.winCardPoolNode = this.winCardPoolNode.getComponent(WinCardPoolNode);
-        cc.assetManager.loadBundle("Texture");
-        cc.assetManager.bundles
 
         EVENT.on(EventId.card_comb,this.onCardComb,this,false);
 
@@ -90,7 +88,7 @@ export default class GamePlayNode extends cc.Component {
         this.allCard.sort((a,b)=>{
             return Math.random()-0.5;
         })
-        let emptyCardInfo:CardInfo = {number:-1,cardType:CardType.empty,pic:"Card/back"}
+        let emptyCardInfo:CardInfo = {number:-1,cardType:CardType.empty,pic:"Card/back",}
         for (let i = 0; i < this.allCard.length; i++) {
             const CardInfo = this.allCard[i];
             let cardNode =  this.createCardNode(CardInfo.cardType,CardInfo.number,CardInfo.pic);
@@ -245,4 +243,8 @@ export interface CardInfo{
     cardType?:CardType;
     pic?:string;
     number?:number;
+
+    poolIndex?:number;
+
+    id?:number;
 }

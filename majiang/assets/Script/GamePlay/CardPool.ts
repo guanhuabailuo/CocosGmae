@@ -1,5 +1,6 @@
 import { EventId } from "../Define/EventId";
 import { EVENT } from "../Framework/Event/EventMgr";
+import { CardInfo } from "../UI/GamePlayNode";
 import Card from "./Card";
 import { ContinuousFilter } from "./WinFilter/Filter";
 
@@ -12,6 +13,13 @@ export default class CardPool{
     filter:ContinuousFilter;
 
     size:number;
+
+    length:number;
+
+    wide:number;
+
+    interval:number;
+
 
     constructor(size:number){
         this.size = size;
@@ -38,9 +46,6 @@ export default class CardPool{
 
     join(card:Card,index?:number){
         let idnex =  Math.floor(index/this.size);
-        if(index == 0){
-            console.info(idnex.toString(),(index - this.size*idnex).toString())
-        }
         this.pool[idnex][index - this.size*idnex] = card; 
     }
 
@@ -128,6 +133,12 @@ export default class CardPool{
             }
         }
         return false;
+    }
+
+    caculatePosByIndex(index:number){
+        let index_x =  Math.floor(index/this.size);
+        let index_y = index - this.size*index_x;
+        
     }
 
 

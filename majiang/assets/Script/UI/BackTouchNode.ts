@@ -5,6 +5,9 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import { EventId } from "../Define/EventId";
+import { EVENT } from "../Framework/Event/EventMgr";
+
 const {ccclass, property} = cc._decorator;
 
 @ccclass
@@ -32,5 +35,6 @@ export default class NewClass extends cc.Component {
         let position = this.node.convertToNodeSpaceAR(event.getLocation());
         this.ParticleSystem.node.setPosition(position);
         this.ParticleSystem.resetSystem();
+        EVENT.emit(EventId.Button_touch)
     }
 }
