@@ -7,7 +7,7 @@
 
 import ConfigNode from "../Config/ConfigNode";
 import { EventId } from "../Define/EventId";
-import { CardType } from "../Define/Type";
+import { CardType, PoolType } from "../Define/Type";
 import { EVENT } from "../Framework/Event/EventMgr";
 import Card from "../GamePlay/Card";
 import GamePlay, { Game_Play_ins } from "../GamePlay/GamePlay";
@@ -88,7 +88,7 @@ export default class GamePlayNode extends cc.Component {
         this.allCard.sort((a,b)=>{
             return Math.random()-0.5;
         })
-        let emptyCardInfo:CardInfo = {number:-1,cardType:CardType.empty,pic:"Card/back",}
+        let emptyCardInfo:CardInfo = {number:-1,cardType:CardType.empty,pic:"Card/back",pooltype:PoolType.none}
         for (let i = 0; i < this.allCard.length; i++) {
             const CardInfo = this.allCard[i];
             let cardNode =  this.createCardNode(CardInfo.cardType,CardInfo.number,CardInfo.pic);
@@ -111,7 +111,7 @@ export default class GamePlayNode extends cc.Component {
         for (let i = 0; i < 3; i++) {
             let index = tag.card[i].node.getSiblingIndex();
             let cardNode =  this.allEmptyCardNode.pop();
-            Game_Play_ins.winCardPoolNode.join(tag.card[i].node.getComponent(CardNode));
+            //Game_Play_ins.winCardPoolNode.join(tag.card[i].node.getComponent(CardNode));
             this.gamePlay.cardPoolNode.join(cardNode.getComponent(CardNode),index);
         }
         this.updateLeftCardUI();
@@ -142,7 +142,7 @@ export default class GamePlayNode extends cc.Component {
         for (let i = 1; i < 4; i++) {
             for (let j = 1; j <= 9; j++) {
                 for (let k = 0; k < 4; k++) {
-                    let cardInfo:CardInfo = {}; 
+                    let cardInfo:CardInfo = {pooltype:PoolType.none}; 
                     cardInfo.number = j
                     if(i == 1){
                         cardInfo.cardType = CardType.tiao
@@ -163,7 +163,7 @@ export default class GamePlayNode extends cc.Component {
 
         for (let i = 1; i <= 4; i++) {
             for (let j = 0; j < 4; j++) {
-                let cardInfo:CardInfo = {}; 
+                let cardInfo:CardInfo = {pooltype:PoolType.none}; 
                 cardInfo.number = i
                 cardInfo.cardType = CardType.feng
                 cardInfo.pic = "Card/feng_"+i;
@@ -173,7 +173,7 @@ export default class GamePlayNode extends cc.Component {
 
         for (let i = 1; i <= 3; i++) {
             for (let j = 0; j < 4; j++) {
-                let cardInfo:CardInfo = {}; 
+                let cardInfo:CardInfo = {pooltype:PoolType.none}; 
                 cardInfo.number = i
                 cardInfo.cardType = CardType.zi
                 cardInfo.pic = "Card/zi_"+i;
@@ -188,7 +188,7 @@ export default class GamePlayNode extends cc.Component {
         
 
         const deadCard:Array<CardInfo> = new Array;
-        let deadCardInfo = {number:-1,cardType:CardType.dead,pic:"back/bg_game_huge_1"}
+        let deadCardInfo = {number:-1,cardType:CardType.dead,pic:"back/bg_game_huge_1",pooltype:PoolType.none}
 
         let levelConfig = ConfigNode.INS.getCurrentLevelConfig();
         for (let i = 0; i < levelConfig.dead.length; i++) {
@@ -240,6 +240,7 @@ export default class GamePlayNode extends cc.Component {
 
 
 export interface CardInfo{
+    pooltype:PoolType;
     cardType?:CardType;
     pic?:string;
     number?:number;

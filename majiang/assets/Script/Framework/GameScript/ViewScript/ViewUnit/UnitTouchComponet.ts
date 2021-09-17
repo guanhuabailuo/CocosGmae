@@ -31,7 +31,12 @@ export default class UnitTouchComponet extends cc.Component {
 
    
     handlerAction(action:TouchStartViewAction){
-        cc.tween(this.touchMark.node).to(0.5,{opacity:100}).start();
+        if(action.show){
+            cc.tween(this.touchMark.node).to(0.2,{opacity:100}).start();
+        }else{
+            cc.tween(this.touchMark.node).to(0.2,{opacity:0}).start();
+        }
+        
     }
 
 }

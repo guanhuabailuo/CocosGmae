@@ -2,13 +2,12 @@ import { CardInfo } from "../../../../UI/GamePlayNode";
 import { CombTag } from "../../LogicScript/FilterNew";
 import BaseViewAction from "./BaseViewAction";
 
-export default class DestoryViewAction extends BaseViewAction{
+export default class RemoveViewAction extends BaseViewAction{
 
-    tag:CombTag
 
-    constructor(tag:CombTag){
-        super(undefined);
-        this.tag = tag;
+    constructor(id:string){
+        super(id);
+        
     }
 
 

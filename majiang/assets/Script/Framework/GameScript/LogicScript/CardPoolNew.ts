@@ -1,11 +1,13 @@
 
 import { EventId } from "../../../Define/EventId";
+import { PoolType } from "../../../Define/Type";
 import { CardInfo } from "../../../UI/GamePlayNode";
 import { EVENT } from "../../Event/EventMgr";
 import { CombTag, ContinuousFilter } from "./FilterNew";
 
 
 export default class CardPoolNew{
+    
     
     pool:Array<Array<CardInfo>>;
 
@@ -78,6 +80,9 @@ export default class CardPoolNew{
     }
 
     neighbor(one:CardInfo,two:CardInfo){
+        if(one.pooltype == PoolType.SendPool||two.pooltype == PoolType.SendPool){
+            return true;
+        }
         if(Math.abs(one.poolIndex-two.poolIndex) == 1){
             return true;
         }
@@ -100,6 +105,10 @@ export default class CardPoolNew{
         let a1,a2,b1,b2;
         let a = this.selectCards[0];
         let b = this.selectCards[1];
+        // let apoolType = a.pooltype;
+        // let bPoolType = b.pooltype;
+        // a.pooltype = bPoolType;
+        // b.pooltype = apoolType;
         let apoolIndex = a.poolIndex;
         let bpoolIndex = b.poolIndex;
         a.poolIndex = bpoolIndex;
@@ -118,9 +127,14 @@ export default class CardPoolNew{
             }
            }
         }
-        this.pool[a1][a2] = b;
-        this.pool[b1][b2] = a;
-        
+        if (a1 != undefined) {
+            this.pool[a1][a2] = b;
+        }
+        if (b1 != undefined) {
+            this.pool[b1][b2] = a;
+        }
+        this.selectCards[0] = b;
+        this.selectCards[1] = a;
     }
 
     debugPrint(){
@@ -220,9 +234,19 @@ export default class CardPoolNew{
                 }
             }
         }
-         
+    }
 
-
+    getEmpty():number[] {
+        let emptyIndex:number[] = [];
+        for (let i = 0; i < this.pool.length; i++) {
+            let littelPool = this.pool[i];
+            for (let j = 0; j < littelPool.length; j++) {
+                if(!this.pool[i][j]){
+                    emptyIndex.push(i*this.size+j);
+                }
+            }
+        }
+        return emptyIndex;
     }
 
 }

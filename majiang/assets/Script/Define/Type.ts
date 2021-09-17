@@ -9,6 +9,7 @@ export enum CardType{
 }
 
 export enum PoolType{
+    none = "none",
     SendPool = "SendPool",
     GamePool = "GamePool",
     WinPool = "WinPool",

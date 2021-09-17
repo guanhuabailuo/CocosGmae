@@ -1,5 +1,7 @@
 import Card from "../../../../GamePlay/Card";
 import { CardInfo } from "../../../../UI/GamePlayNode";
+import GameCenter from "../../GameCenter";
+import MoveViewAction from "../../ViewScript/ViewAction/MoveViewAction";
 import BaseUnit, { UnitType } from "./BaseUnit";
 
 export default class CardUnit extends BaseUnit{
@@ -11,7 +13,9 @@ export default class CardUnit extends BaseUnit{
         this._card = card;
     }
 
-
+    start(){
+        GameCenter.GAME_CENTER.pushViewAction(new MoveViewAction(this._uuid,undefined));
+    }
 
 
 

@@ -5,12 +5,15 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import { EventId } from "../../../Define/EventId";
+import { EVENT } from "../../Event/EventMgr";
 import GameCenter from "../GameCenter";
 import { UnitType } from "../LogicScript/Unit/BaseUnit";
 import BaseViewComponet from "./BaseViewComponet";
 import BaseViewAction from "./ViewAction/BaseViewAction";
 import DestoryViewAction from "./ViewAction/DestoryViewAction";
 import MoveViewAction from "./ViewAction/MoveViewAction";
+import RemoveViewAction from "./ViewAction/RemoveViewAction";
 import UnitViewComponet from "./ViewUnit/UnitViewComponet";
 
 const {ccclass, property} = cc._decorator;
@@ -55,6 +58,10 @@ export default class ViewCenter extends BaseViewComponet {
                this.removeUnit(action);
                continue;
            }
+           if(action instanceof RemoveViewAction){
+                this.removeOneUnit(action.targetUid);
+                continue;
+           }
 
            const cp = this.nodeMap.get(action.targetUid);
            if(cp){
@@ -66,13 +73,20 @@ export default class ViewCenter extends BaseViewComponet {
         }
     }
 
+    removeOneUnit(id:string){
+        let node = this.nodeMap.get(id);
+        this.nodeMap.delete(id);
+        node?.node.destroy();
+    }
+
     removeUnit(action:DestoryViewAction){
-        for (let i = 0; i < action.cards.length; i++) {
-            let cp =  this.nodeMap.get(action.cards[i].id+"");
-            this.nodeMap.delete(action.cards[i].id+"");
-            cp?.node.destroy();
+        let nodes:cc.Node[] = []
+        for (let i = 0; i < action.tag.card.length; i++) {
+            let cp =  this.nodeMap.get(action.tag.card[i].id+"");
+            this.nodeMap.delete(action.tag.card[i].id+"");
+            nodes.push(cp.node);
         }
-        
+        EVENT.emit(EventId.card_comb,action.tag,nodes);
     }
 
     addUnit(cp: UnitViewComponet,position:cc.Vec3) {

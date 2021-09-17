@@ -19,6 +19,9 @@ export default class PoolBox{
     }
 
     caculatePosByIndex(indexTemp:number):cc.Vec3{
+        if(indexTemp == -1){
+            return new cc.Vec3(430,-800)
+        }
         let index = indexTemp;
         if(this.pos[index]){
             return this.pos[index];

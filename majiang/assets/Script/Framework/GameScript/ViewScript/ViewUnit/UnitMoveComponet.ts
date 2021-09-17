@@ -28,7 +28,7 @@ export default class UnitMoveComponet extends cc.Component {
     handlerAction(action:MoveViewAction){
         let index =  this.getComponent(CardInfoComponet).card.poolIndex;
         let pos = GameCenter.GAME_CENTER._poolBox.caculatePosByIndex(index);
-        cc.tween(this.node).to(0.5,{position:pos}).start();
+        cc.tween(this.node).to(0.1,{position:pos}).start();
     }
 
     reuse(){
