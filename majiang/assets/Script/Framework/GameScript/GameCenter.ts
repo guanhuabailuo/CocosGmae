@@ -5,11 +5,13 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import { EventId } from '../../Define/EventId'
 import { CardType, PoolType } from '../../Define/Type'
 import Card from '../../GamePlay/Card'
 import PoolBox from '../../GamePlay/PoolBox'
 import { CardInfo } from '../../UI/GamePlayNode'
-import GameData from './GameData/GameData'
+import { EVENT } from '../Event/EventMgr'
+import GameData, { gameData } from './GameData/GameData'
 import BaseLogicAction from './LogicScript/LogicAction/BaseLogicAction'
 import LogicCenter from './LogicScript/LogicCenter'
 import LogicTimer from './LogicScript/Timer'
@@ -65,6 +67,8 @@ export default class GameCenter extends cc.Component {
             this._ViewCenter.addUnit(UnitViewcp,pos);
         }
         this.addCard2Mo();
+        gameData._leftCardNum = this._cardNodePool.size();
+        EVENT.emit(EventId.update_card_num);
     }
 
     addCard2Game(empty: number[]) {
@@ -82,6 +86,8 @@ export default class GameCenter extends cc.Component {
                 this._LogicCenter.addUnit(unit);
                 this._ViewCenter.addUnit(UnitViewcp,pos);
             }
+            gameData._leftCardNum = this._cardNodePool.size();
+            EVENT.emit(EventId.update_card_num);
         }
     }
 
@@ -97,6 +103,8 @@ export default class GameCenter extends cc.Component {
             let unit:CardUnit = new CardUnit(cardInfoCp.card.id+"",pos,cardInfoCp.card);
             this._LogicCenter.addUnit(unit);
             this._ViewCenter.addUnit(UnitViewcp,pos);
+            gameData._leftCardNum = this._cardNodePool.size();
+            EVENT.emit(EventId.update_card_num);
         }
     }
 
@@ -121,7 +129,7 @@ export default class GameCenter extends cc.Component {
 
     createOneGroupCardInfo():Array<CardInfo>{
         let allCard:Array<CardInfo> = new Array();
-        for (let i = 1; i <= 0; i++) {
+        for (let i = 1; i <= 3; i++) {
             for (let j = 1; j <= 9; j++) {
                 for (let k = 0; k < 4; k++) {
                     let cardInfo:CardInfo = {pooltype:PoolType.none}; 
@@ -144,7 +152,7 @@ export default class GameCenter extends cc.Component {
         }
 
         for (let i = 1; i <= 4; i++) {
-            for (let j = 0; j < 40; j++) {
+            for (let j = 0; j < 4; j++) {
                 let cardInfo:CardInfo = {pooltype:PoolType.none}; 
                 cardInfo.number = i
                 cardInfo.cardType = CardType.feng
@@ -153,7 +161,7 @@ export default class GameCenter extends cc.Component {
             }
         }
 
-        for (let i = 1; i <= 0; i++) {
+        for (let i = 1; i <= 3; i++) {
             for (let j = 0; j < 4; j++) {
                 let cardInfo:CardInfo = {pooltype:PoolType.none}; 
                 cardInfo.number = i

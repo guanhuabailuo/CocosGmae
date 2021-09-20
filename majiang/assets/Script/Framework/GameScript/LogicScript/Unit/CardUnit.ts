@@ -1,7 +1,10 @@
+import { PoolType } from "../../../../Define/Type";
 import Card from "../../../../GamePlay/Card";
 import { CardInfo } from "../../../../UI/GamePlayNode";
 import GameCenter from "../../GameCenter";
 import MoveViewAction from "../../ViewScript/ViewAction/MoveViewAction";
+import TouchMoveViewAction from "../../ViewScript/ViewAction/TouchMoveViewAction";
+import TouchMoveAction from "../LogicAction/TouchMoveAction";
 import BaseUnit, { UnitType } from "./BaseUnit";
 
 export default class CardUnit extends BaseUnit{
@@ -17,6 +20,12 @@ export default class CardUnit extends BaseUnit{
         GameCenter.GAME_CENTER.pushViewAction(new MoveViewAction(this._uuid,undefined));
     }
 
+
+    handlerTouchMoveAction(action: TouchMoveAction) {
+        if(this._card.pooltype == PoolType.SendPool){
+            GameCenter.GAME_CENTER.pushViewAction(new TouchMoveViewAction(this._uuid,action.pos));
+        }
+    }
 
 
 

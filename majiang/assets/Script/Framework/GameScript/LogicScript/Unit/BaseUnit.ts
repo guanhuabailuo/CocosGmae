@@ -1,6 +1,7 @@
 import BaseLogicAction from "../LogicAction/BaseLogicAction";
 import MoveAction from "../LogicAction/MoveAction";
 import PositionAction from "../LogicAction/PositionAction";
+import TouchMoveAction from "../LogicAction/TouchMoveAction";
 
 export default class BaseUnit{
     
@@ -34,6 +35,12 @@ export default class BaseUnit{
         if(action instanceof PositionAction){
             this.handlerPositionAction(action);
         }
+        if(action instanceof TouchMoveAction){
+            this.handlerTouchMoveAction(action);
+        }
+    }
+    handlerTouchMoveAction(action: TouchMoveAction) {
+       
     }
 
     handlerMoveAction(action:MoveAction){

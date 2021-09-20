@@ -5,10 +5,12 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+
 import TouchStartAction from "../LogicScript/LogicAction/TouchStartAction";
 import { UnitType } from "../LogicScript/Unit/BaseUnit";
 import BaseViewAction from "./ViewAction/BaseViewAction";
 import MoveViewAction from "./ViewAction/MoveViewAction";
+import TouchMoveViewAction from "./ViewAction/TouchMoveViewAction";
 import TouchStartViewAction from "./ViewAction/TouchStartViewAction";
 import UnitMoveComponet from "./ViewUnit/UnitMoveComponet";
 import UnitTouchComponet from "./ViewUnit/UnitTouchComponet";
@@ -42,6 +44,11 @@ export default class BaseViewComponet extends cc.Component {
         if(action instanceof TouchStartViewAction){
             let cp = this.getComponent(UnitTouchComponet);
             cp?.handlerAction(action);
+        }
+
+        if(action instanceof TouchMoveViewAction){
+            let cp = this.getComponent(UnitMoveComponet);
+            cp?.handlerTouchMove(action);
         }
     }
 

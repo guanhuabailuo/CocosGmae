@@ -7,6 +7,7 @@
 
 
 
+import TouchMoveViewAction from "../ViewAction/TouchMoveViewAction";
 import TouchStartViewAction from "../ViewAction/TouchStartViewAction";
 
 
@@ -36,7 +37,8 @@ export default class UnitTouchComponet extends cc.Component {
         }else{
             cc.tween(this.touchMark.node).to(0.2,{opacity:0}).start();
         }
-        
     }
+
+    
 
 }

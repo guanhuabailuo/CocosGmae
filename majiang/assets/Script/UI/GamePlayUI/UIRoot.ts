@@ -5,6 +5,8 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import { EventId } from "../../Define/EventId";
+import { EVENT } from "../../Framework/Event/EventMgr";
 import GameCenter from "../../Framework/GameScript/GameCenter";
 import { gameData } from "../../Framework/GameScript/GameData/GameData";
 
@@ -22,6 +24,8 @@ export default class UIRoot extends cc.Component {
     start () {
         this.updateLeftCardUI();
         this.updateScoreUI();
+        EVENT.on(EventId.addScore,this.onAddScore,this,false);
+        EVENT.on(EventId.update_card_num,this.onChangeCardNum,this,false);
     }
 
     updateScoreUI(){
@@ -31,6 +35,16 @@ export default class UIRoot extends cc.Component {
     updateLeftCardUI(){
         this.LeftCardLabel.string = gameData._leftCardNum +"";
     }
+
+    onAddScore(addScore:number){
+        gameData._score = gameData._score + addScore;
+        this.updateScoreUI();
+    }
+
+    onChangeCardNum(){
+        this.updateLeftCardUI();
+    }
+
 
     
 }

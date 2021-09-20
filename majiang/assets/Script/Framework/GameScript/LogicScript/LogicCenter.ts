@@ -19,6 +19,7 @@ import BaseLogicAction from './LogicAction/BaseLogicAction'
 import DestoryUnitAction from './LogicAction/DestoryUnitAction'
 import PositionAction from './LogicAction/PositionAction'
 import RemoveAction from './LogicAction/RemoveAction'
+import TouchRemoveAction from './LogicAction/TouchRemoveAction'
 import TouchStartAction from './LogicAction/TouchStartAction'
 import BaseUnit, { UnitType } from './Unit/BaseUnit'
 import CardUnit from './Unit/CardUnit'
@@ -99,6 +100,10 @@ export default class LogicCenter {
                 this.removeOneUnit(action.cardinfo);
                 continue;
             }
+            if(action instanceof TouchRemoveAction){
+                this.onTouchRemoveAction(action)
+            }
+
             const handlerUnit = this._unitMap.get(action.targetUid)
             if (handlerUnit) {
                 handlerUnit.handlerAction(action)
@@ -106,6 +111,23 @@ export default class LogicCenter {
                 console.info(action.targetUid + '单位不存在')
             }
         }
+    }
+    onTouchRemoveAction(action: TouchRemoveAction) {
+        let a = this._cardPool.selectCards[0];
+        let b = this._cardPool.selectCards[1];
+        if(a){
+            GameCenter.GAME_CENTER.pushViewAction(new TouchStartViewAction(this._cardPool.selectCards[0].id+"",undefined,false));
+        }
+        if(b){
+            GameCenter.GAME_CENTER.pushViewAction(new TouchStartViewAction(this._cardPool.selectCards[1].id+"",undefined,false));
+        }
+        
+    
+        let unit = this._unitMap.get(action.targetUid) as CardUnit;
+        this.removeOneUnit(unit._card);
+        GameCenter.GAME_CENTER.pushViewAction(new RemoveViewAction(action.targetUid+""));
+        GameCenter.GAME_CENTER.addCard2Mo();
+        this._cardPool.selectCards = []
     }
 
     removeUnit(action:DestoryUnitAction){
@@ -125,8 +147,6 @@ export default class LogicCenter {
             if(unit){
                 unit.onDestory();
             }
-            
-            
     }
 
 
@@ -165,24 +185,28 @@ export default class LogicCenter {
         let b = this._cardPool.selectCards[1];
         if(a.pooltype != PoolType.SendPool && b.pooltype != PoolType.SendPool){
             this._cardPool.exchange();
-            let amove = new MoveViewAction(this._cardPool.selectCards[0].id+"",undefined);
-            let bmove = new MoveViewAction(this._cardPool.selectCards[1].id+"",undefined);
+            let amove = new MoveViewAction(a.id+"",undefined);
+            let bmove = new MoveViewAction(b.id+"",undefined);
             GameCenter.GAME_CENTER.pushViewAction(amove);
             GameCenter.GAME_CENTER.pushViewAction(bmove);
-            GameCenter.GAME_CENTER.pushViewAction(new TouchStartViewAction(this._cardPool.selectCards[0].id+"",undefined,false));
-            GameCenter.GAME_CENTER.pushViewAction(new TouchStartViewAction(this._cardPool.selectCards[1].id+"",undefined,false));
+            GameCenter.GAME_CENTER.pushViewAction(new TouchStartViewAction(a.id+"",undefined,false));
+            GameCenter.GAME_CENTER.pushViewAction(new TouchStartViewAction(b.id+"",undefined,false));
             this._cardPool.selectCards = [];
         }else{
             let card:CardInfo = undefined;
+            let card1:CardInfo = undefined;
             if(a.pooltype == PoolType.SendPool){
                 card = a;
+                card1 = b;
             }
             if(b.pooltype == PoolType.SendPool){
                 card = b;
+                card1 = a;
             }
             GameCenter.GAME_CENTER.addCard2Mo();
             GameCenter.GAME_CENTER.pushViewAction(new RemoveViewAction(card.id+""));
             GameCenter.GAME_CENTER.pushLogicAction(new RemoveAction(card.id+"",card));
+            GameCenter.GAME_CENTER.pushViewAction(new TouchStartViewAction(card1.id+"",undefined,false));
             this._cardPool.selectCards = [];
         }
         

@@ -18,8 +18,9 @@ import DrawCardState from "../StateMachine/DrawCardState";
 import ExchangeCardState from "../StateMachine/ExchangeCardState";
 import CardNode from "./CardNode";
 import CardPoolNode from "./CardPoolNode";
+import WinCardPoolNode from "./GamePlayUI/WinCardPoolNode";
 import SendCardPoolNode from "./SendCardPoolNode";
-import WinCardPoolNode from "./WinCardPoolNode";
+
 
 const {ccclass, property} = cc._decorator;
 

@@ -105,10 +105,10 @@ export default class CardPoolNew{
         let a1,a2,b1,b2;
         let a = this.selectCards[0];
         let b = this.selectCards[1];
-        // let apoolType = a.pooltype;
-        // let bPoolType = b.pooltype;
-        // a.pooltype = bPoolType;
-        // b.pooltype = apoolType;
+        let apoolType = a.pooltype;
+        let bPoolType = b.pooltype;
+        a.pooltype = bPoolType;
+        b.pooltype = apoolType;
         let apoolIndex = a.poolIndex;
         let bpoolIndex = b.poolIndex;
         a.poolIndex = bpoolIndex;
