@@ -6,12 +6,9 @@
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import { EventId } from "../../Define/EventId";
-import { PoolType } from "../../Define/Type";
 import { EVENT } from "../../Framework/Event/EventMgr";
-import { CombTag, duanyaojiuFilter, qingyiseFilter, WinFilter, WinModle } from "../../Framework/GameScript/LogicScript/FilterNew";
-import Card from "../../GamePlay/Card";
+import { CombTag, duanyaojiuFilter, qingyiseFilter, WinFilter, WinModle, yibeikou } from "../../Framework/GameScript/LogicScript/FilterNew";
 
-import CardNode from "../CardNode";
 
 const {ccclass, property} = cc._decorator;
 
@@ -35,6 +32,7 @@ export default class WinCardPoolNode extends cc.Component {
     onLoad(){
         this.filters.push(new qingyiseFilter());
         this.filters.push(new duanyaojiuFilter());
+        this.filters.push(new yibeikou());
     }
 
     start () {

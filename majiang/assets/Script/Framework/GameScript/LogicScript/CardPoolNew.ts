@@ -1,6 +1,6 @@
 
 import { EventId } from "../../../Define/EventId";
-import { PoolType } from "../../../Define/Type";
+import { CardType, PoolType } from "../../../Define/Type";
 import { CardInfo } from "../../../UI/GamePlayNode";
 import { EVENT } from "../../Event/EventMgr";
 import { CombTag, ContinuousFilter } from "./FilterNew";
@@ -199,7 +199,7 @@ export default class CardPoolNew{
                 let littelPool = this.pool[i];
                 for (let j = 0; j < littelPool.length; j++) {
                     let cardInfo = this.pool[i][j];
-                    if(cardInfo){
+                    if(cardInfo && cardInfo.cardType != CardType.dead){
                         let next = this.pool[i+1][j]
                         if(!next){
                             this.pool[i][j] = undefined;

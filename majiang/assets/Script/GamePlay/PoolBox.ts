@@ -28,8 +28,8 @@ export default class PoolBox{
         }
         let index_x =  Math.floor(index/this.size);
         let index_y = index - this.size*index_x;
-        let x =  this.length/2 - (this.length/this.size)*(index_x) - 100;
-        let y = (this.wide/this.size)*(index_y) - this.wide/2+50;
+        let x =  this.length/2 - (this.length/this.size)*(index_x) - this.length/this.size/1.5;
+        let y = (this.wide/this.size)*(index_y) - this.wide/2+this.wide/this.size/2;
         this.pos[index] = new cc.Vec3(y,x,0)
         return this.pos[index];
     }

@@ -41,13 +41,13 @@ export default class GamePlayNode extends cc.Component {
     winCardPoolNode:cc.Node = null;
 
     @property({type:cc.Label})
-    leftCardNum:cc.Label;
+    leftCardNum:cc.Label = undefined;
 
     @property({type:cc.Label})
-    scoreLabel:cc.Label;
+    scoreLabel:cc.Label = undefined;
 
     @property({type:cc.Button})
-    skipBtn:cc.Button;
+    skipBtn:cc.Button = undefined;
 
     gamePlay:GamePlay;
 

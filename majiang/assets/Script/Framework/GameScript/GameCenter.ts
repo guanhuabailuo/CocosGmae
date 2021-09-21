@@ -28,8 +28,6 @@ const { ccclass, property } = cc._decorator
 @ccclass
 export default class GameCenter extends cc.Component {
     
-
-    
     public static LOGIC_TICK: number = 50
 
     public static GAME_CENTER: GameCenter
@@ -44,22 +42,38 @@ export default class GameCenter extends cc.Component {
 
     _cardNodePool:cc.NodePool;
 
+    _deadNodePool:cc.NodePool;
+
     _poolBox:PoolBox;
 
     onLoad() {
         this.initNodePool();
-        this._poolBox = new PoolBox(7,1050,900,0);
+        this.initDeadNodePool();
+        this._poolBox = new PoolBox(gameData._currentConfig.poolSize,1050,900,0);
         this._ViewCenter = this.getComponent(ViewCenter);
         this._LogicCenter = new LogicCenter();
         GameCenter.GAME_CENTER = this;
     }
 
     start(){
-        for (let i = 0; i < 49; i++) {
-            let node =  this._cardNodePool.get();
+        let deadNums =  gameData._currentConfig.dead as number[]
+        let poolSize = gameData._currentConfig.poolSize*gameData._currentConfig.poolSize
+        for (let i = 0; i < poolSize; i++) {
+            let node:cc.Node = null;
+            if(deadNums.indexOf(i) != -1){
+                node = this._deadNodePool.get();
+            }else{
+                node =  this._cardNodePool.get();
+            }
+            node.scale = gameData.getScale();
             let pos = this._poolBox.caculatePosByIndex(i);
             let cardInfoCp = node.getComponent(CardInfoComponet);
             let UnitViewcp= node.getComponent(UnitViewComponet);
+            if(deadNums.indexOf(i) != -1){
+                UnitViewcp.onTouchStart = () => {};
+                UnitViewcp.onTouchMove = () => {};
+                UnitViewcp.onTouchMove = () => {};
+            }
             UnitViewcp.unitId = cardInfoCp.card.id+"";
             cardInfoCp.card.poolIndex = i;
             let unit:CardUnit = new CardUnit(cardInfoCp.card.id+"",pos,cardInfoCp.card);
@@ -76,6 +90,7 @@ export default class GameCenter extends cc.Component {
             if(this._cardNodePool.size()>0){
                 const poolIndex = empty[i];
                 let node =  this._cardNodePool.get();
+                node.scale = gameData.getScale();
                 let pos = new cc.Vec3(0,-1000);
                 let cardInfoCp = node.getComponent(CardInfoComponet);
                 let UnitViewcp= node.getComponent(UnitViewComponet);
@@ -94,6 +109,7 @@ export default class GameCenter extends cc.Component {
     addCard2Mo(){
         if(this._cardNodePool.size()>0){
             let node =  this._cardNodePool.get();
+            node.scale = gameData.getScale();
             let pos = new cc.Vec3(430,-800);
             let cardInfoCp = node.getComponent(CardInfoComponet);
             let UnitViewcp= node.getComponent(UnitViewComponet);
@@ -127,32 +143,34 @@ export default class GameCenter extends cc.Component {
         }
     }
 
-    createOneGroupCardInfo():Array<CardInfo>{
-        let allCard:Array<CardInfo> = new Array();
-        for (let i = 1; i <= 3; i++) {
-            for (let j = 1; j <= 9; j++) {
-                for (let k = 0; k < 4; k++) {
-                    let cardInfo:CardInfo = {pooltype:PoolType.none}; 
-                    cardInfo.number = j
-                    if(i == 1){
-                        cardInfo.cardType = CardType.tiao
-                        cardInfo.pic = "Card/tiao_"+j;
-                    }
-                    if(i == 2){
-                        cardInfo.cardType = CardType.tong
-                        cardInfo.pic = "Card/tong_"+j;
-                    }
-                    if(i == 3){
-                        cardInfo.cardType = CardType.wan
-                        cardInfo.pic = "Card/wan_"+j;
-                    }
-                    allCard.push(cardInfo);
-                }
-            }
+    initDeadNodePool(){
+        this._deadNodePool = new cc.NodePool(UnitViewComponet)
+        for (let i = 0; i < 10; i++) {
+            let cardInfo:CardInfo = {pooltype:PoolType.none,cardType:CardType.dead,pic:"back/bg_game_huge_1",number:-1,id:1000+i}
+            let cardNode = cc.instantiate(this.unit);
+            let UnitViewcp:UnitViewComponet = cardNode.getComponent(UnitViewComponet);
+            UnitViewcp.init(cardInfo.id+"",UnitType.Player);
+            cardNode.addComponent(CardInfoComponet);
+            let cardInfoCp = cardNode.getComponent(CardInfoComponet);
+            cardInfoCp.card = cardInfo;
+            this._deadNodePool.put(cardNode);
         }
+    }
 
+
+    createOneGroupCardInfo():Array<CardInfo>{
+
+        let levelConfig = gameData._currentConfig;
+        let initCard = levelConfig.initCard;
+        let allCard:Array<CardInfo> = new Array();
+
+        let fengNum = initCard.feng;
+        let ziNum = initCard.zi;
+        let tiaoNum = initCard.tiao;
+        let tongNum = initCard.tong;
+        let wanNum = initCard.wan;
         for (let i = 1; i <= 4; i++) {
-            for (let j = 0; j < 4; j++) {
+            for (let j = 0; j < fengNum; j++) {
                 let cardInfo:CardInfo = {pooltype:PoolType.none}; 
                 cardInfo.number = i
                 cardInfo.cardType = CardType.feng
@@ -162,7 +180,7 @@ export default class GameCenter extends cc.Component {
         }
 
         for (let i = 1; i <= 3; i++) {
-            for (let j = 0; j < 4; j++) {
+            for (let j = 0; j < ziNum; j++) {
                 let cardInfo:CardInfo = {pooltype:PoolType.none}; 
                 cardInfo.number = i
                 cardInfo.cardType = CardType.zi
@@ -170,6 +188,42 @@ export default class GameCenter extends cc.Component {
                 allCard.push(cardInfo);
             }
         }
+        
+        
+        for (let j = 1; j <= 9; j++) {
+            for (let k = 0; k < tiaoNum; k++) {
+                let cardInfo:CardInfo = {pooltype:PoolType.none}; 
+                cardInfo.number = j
+                cardInfo.cardType = CardType.tiao
+                cardInfo.pic = "Card/tiao_"+j;
+                allCard.push(cardInfo);
+            }
+        }
+
+        for (let j = 1; j <= 9; j++) {
+            for (let k = 0; k < tongNum; k++) {
+                let cardInfo:CardInfo = {pooltype:PoolType.none}; 
+                cardInfo.number = j
+                cardInfo.cardType = CardType.tiao
+                cardInfo.pic = "Card/tiao_"+j;
+                allCard.push(cardInfo);
+            }
+        }
+
+        for (let j = 1; j <= 9; j++) {
+            for (let k = 0; k < wanNum; k++) {
+                let cardInfo:CardInfo = {pooltype:PoolType.none}; 
+                cardInfo.number = j
+                cardInfo.cardType = CardType.tiao
+                cardInfo.pic = "Card/tiao_"+j;
+                allCard.push(cardInfo);
+            }
+        }
+    
+
+        
+
+       
         return allCard;
     }
 

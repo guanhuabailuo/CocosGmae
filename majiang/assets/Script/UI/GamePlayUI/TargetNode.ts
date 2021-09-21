@@ -15,10 +15,10 @@ const {ccclass, property} = cc._decorator;
 export default class TargetNode extends cc.Component {
 
     @property({type:cc.Node})
-    root:cc.Node;
+    root:cc.Node = undefined;
 
     @property({type:cc.Prefab})
-    per:cc.Prefab;
+    per:cc.Prefab = undefined;
 
     targets:Array<TargetInfo> = new Array();
 

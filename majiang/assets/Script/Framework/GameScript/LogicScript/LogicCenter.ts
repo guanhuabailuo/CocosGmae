@@ -9,7 +9,7 @@
 import { PoolType } from '../../../Define/Type'
 import { CardInfo } from '../../../UI/GamePlayNode'
 import GameCenter from '../GameCenter'
-import GameData from '../GameData/GameData'
+import GameData, { gameData } from '../GameData/GameData'
 import DestoryViewAction from '../ViewScript/ViewAction/DestoryViewAction'
 import MoveViewAction from '../ViewScript/ViewAction/MoveViewAction'
 import RemoveViewAction from '../ViewScript/ViewAction/RemoveViewAction'
@@ -46,7 +46,7 @@ export default class LogicCenter {
         this._unitMap = new Map()
         this._actionQueen = new Array()
         this._tickPackage = []
-        this._cardPool = new CardPool(7);
+        this._cardPool = new CardPool(gameData._currentConfig.poolSize);
     }
 
     start() {
@@ -169,7 +169,7 @@ export default class LogicCenter {
                         GameCenter.GAME_CENTER.scheduleOnce(()=>{
                             this._cardPool.onAnimation = false;
                             this.resetSelectCard();
-                        },0.3)
+                        },0.2)
                     }else{
                         GameCenter.GAME_CENTER.scheduleOnce(()=>{
                             this.checkCard();

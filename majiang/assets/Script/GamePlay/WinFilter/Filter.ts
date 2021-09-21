@@ -86,8 +86,16 @@ export enum WinModle{
 
     qingyise="qingyise",
     duanyaojiu = "duanyaojiu",
-
     none = "none",
+}
+
+export function getWinName(winModel:WinModle):string{
+    switch(winModel){
+        case WinModle.qingyise:
+            return "清一色"
+    }
+
+    return ""
 }
 
 

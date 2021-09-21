@@ -1,4 +1,33 @@
 [
-    {"dead":[0,6,24,42,48],"target":[{"type":"score","target":800},{ "type":"dasixi","target":1},{ "type":"qingyise","target":1}]}
+    {
+        "dead": [
+            0,
+            6,
+            24,
+            42,
+            48
+        ],
+        "initCard": {
+            "feng": 4,
+            "zi": 4,
+            "tiao": 4,
+            "wan": 4,
+            "tong": 4
+        },
+        "poolSize":5,
+        "target": [
+            {
+                "type": "score",
+                "target": 800
+            },
+            {
+                "type": "dasixi",
+                "target": 1
+            },
+            {
+                "type": "qingyise",
+                "target": 1
+            }
+        ]
+    }
 ]
-

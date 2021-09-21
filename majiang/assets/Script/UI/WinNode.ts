@@ -7,8 +7,9 @@
 
 import { EventId } from "../Define/EventId";
 import { EVENT } from "../Framework/Event/EventMgr";
+import { getWinName, getWinScore, WinModle } from "../Framework/GameScript/LogicScript/FilterNew";
 import { Game_Play_ins } from "../GamePlay/GamePlay";
-import { WinModle, WinTag } from "../GamePlay/WinFilter/Filter";
+
 
 const {ccclass, property} = cc._decorator;
 
@@ -17,43 +18,51 @@ export default class NewClass extends cc.Component {
     
     @property({type:cc.Node})
     winView:cc.Node = null;
-    @property({type:cc.Node})
-    qingyise:cc.Node = null;
-    @property({type:cc.Node})
-    duanyaojiu:cc.Node = null;
+    @property({type:cc.Prefab})
+    tag:cc.Prefab = null;
     
     @property({type:cc.Label})
     socre:cc.Label = null;
+
+    _TagPool:cc.NodePool = null;
 
     onLoad(){
         EVENT.on(EventId.win,this.onWin,this,false)
         this.winView.scale = 0;
         this.winView.active = false;
-        this.qingyise.active = false;
-        this.duanyaojiu.active = false;
+        this._TagPool = new cc.NodePool();
+        for (let i = 0; i < 10; i++) {
+           this._TagPool.put(cc.instantiate(this.tag));   
+        }
     }
+
+
     
     start () {
 
     }
 
     onWin(tags:Array<WinModle>){
-        let socre = 1000;
+        let allSocre = 0;
         this.winView.active = true;
-        if(tags.indexOf(WinModle.qingyise) != -1){
-            this.qingyise.active = true;
-            socre += 5000;
+        
+        for (let i = 0; i < tags.length; i++) {
+            let model = tags[i];
+            let name = getWinName(model);
+            let score = getWinScore(model);
+            let node = this._TagPool.get();
+            node.getChildByName("Name").getComponent(cc.Label).string = name;
+            node.getChildByName("Score").getComponent(cc.Label).string = score+"";
+            node.setParent(this.winView);
+            allSocre += score;
         }
-        if(tags.indexOf(WinModle.duanyaojiu) != -1){
-            this.duanyaojiu.active = true;
-            socre += 1000;
-        }
-        this.socre.string = "分数:"+socre;
-        EVENT.emit(EventId.addScore,socre);
-        cc.tween(this.winView).to(0.1,{scale:1}).to(1,{}).to(0.5,{scale:0}).call(()=>{
+        this.socre.string = "分数:"+allSocre;
+        EVENT.emit(EventId.addScore,allSocre);
+        cc.tween(this.winView).to(0.1,{scale:1}).to(2,{}).to(0.5,{scale:0}).call(()=>{
             this.winView.active = false;
-            this.qingyise.active = false;
-            this.duanyaojiu.active = false;
+            this.winView.children.forEach(e=>{
+                this._TagPool.put(e);
+            })
         }).start()
     }
 }
