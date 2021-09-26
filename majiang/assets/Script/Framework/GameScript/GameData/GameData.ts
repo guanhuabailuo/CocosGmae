@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { WinModle } from "../LogicScript/FilterNew";
 
 
@@ -20,11 +21,18 @@ export default class GameData{
     }
     
     _currentLevel = 0;
+=======
+
+
+export default class GameData{
+
+>>>>>>> main
     _score:number;
     _leftCardNum:number;
     _gameConfig:{}
     _currentConfig:any;
 
+<<<<<<< HEAD
     _winModels:Array<WinModle>;
 
     allConfig: any;
@@ -69,12 +77,22 @@ export default class GameData{
 
     loadNextLevelConfig(){
         this._currentConfig = this.allConfig[this._currentLevel];
+=======
+    constructor(){
+        this._score = 0;
+        this._leftCardNum = 0;
+        this._currentConfig = JSON.parse('{"dead":[],"initCard":{"feng":0,"zi":0,"tiao":0,"wan":36,"tong":0},"poolSize":5,"target":[{"type":"score","target":800},{"type":"dasixi","target":1},{"type":"qingyise","target":1}]}');
+>>>>>>> main
     }
 
     reset(){
         this._score = 0;
         this._leftCardNum = 0;
+<<<<<<< HEAD
         this._currentConfig = JSON.parse('{"dead":[0,6,24,42,48],"initCard":{"feng":4,"zi":4,"tiao":4,"wan":4,"tong":4},"target":[{"type":"score","target":800},{"type":"duanyaojiu","target":1},{"type":"qingyise","target":1}]}');
+=======
+        this._currentConfig = JSON.parse('{"dead":[0,6,24,42,48],"initCard":{"feng":4,"zi":4,"tiao":4,"wan":4,"tong":4},"target":[{"type":"score","target":800},{"type":"dasixi","target":1},{"type":"qingyise","target":1}]}');
+>>>>>>> main
     }
 
     getScale(){
@@ -87,6 +105,7 @@ export default class GameData{
         return 1;
     }
 
+<<<<<<< HEAD
     addWinModel(winModel:WinModle){
         this._winModels.push(winModel);
     }
@@ -112,6 +131,8 @@ export default class GameData{
         return count;
     }
 
+=======
+>>>>>>> main
 }
 
 export const gameData = new GameData();

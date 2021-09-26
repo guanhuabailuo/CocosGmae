@@ -83,6 +83,7 @@ export interface WinTag {
     cardType?: CardType;
 }
 
+<<<<<<< HEAD
 
 
 
@@ -98,16 +99,21 @@ export interface WinTag {
 
 
 
+=======
+>>>>>>> main
 export enum WinModle {
 
     qingyise = "qingyise",
     duanyaojiu = "duanyaojiu",
     yibeikou = "yibeikou",
     none = "none",
+<<<<<<< HEAD
     duiduihu = "duiduihu",
     dasixi = "dasixi",
     pinghu = "pinghu",
     dasanyuan = "dasanyuan"
+=======
+>>>>>>> main
 }
 
 export function getWinName(winModel:WinModle):string{
@@ -118,14 +124,18 @@ export function getWinName(winModel:WinModle):string{
             return "断幺九"
         case WinModle.qingyise:
             return "一杯口"
+<<<<<<< HEAD
         case WinModle.duiduihu:
             return "对对胡"
         case WinModle.pinghu:
             return "平胡"
+=======
+>>>>>>> main
     }
     return "平胡"
 }
 
+<<<<<<< HEAD
 export function castString(str: string): string {
     if (str == 'score') {
         return '分数:';
@@ -162,6 +172,16 @@ export function getWinScore(winModel:WinModle):number{
             return 1000
         case WinModle.dasanyuan:
             return 5000
+=======
+export function getWinScore(winModel:WinModle):number{
+    switch(winModel){
+        case WinModle.qingyise:
+            return 5000;
+        case WinModle.duanyaojiu:
+            return 1000;
+        case WinModle.qingyise:
+            return 1000
+>>>>>>> main
     }
     return 1000;
 }
@@ -188,6 +208,7 @@ export class qingyiseFilter extends WinFilter {
     }
 }
 
+<<<<<<< HEAD
 export class duiduihuFilter extends WinFilter {
 
     check(tag_1: CombTag, tag_2: CombTag, tag_3: CombTag, tag_4: CombTag): WinModle {
@@ -242,6 +263,9 @@ export class dasanyuanFilter extends WinFilter {
 
 
 export function createArray(tag_1: CombTag, tag_2: CombTag, tag_3: CombTag, tag_4: CombTag):CombTag[]{
+=======
+export function createArray(tag_1: CombTag, tag_2: CombTag, tag_3: CombTag, tag_4: CombTag){
+>>>>>>> main
     let tagArray = [];
     tagArray.push(tag_1);
     tagArray.push(tag_2);

@@ -9,7 +9,10 @@ import { EventId } from "../../Define/EventId";
 import { EVENT } from "../../Framework/Event/EventMgr";
 import GameCenter from "../../Framework/GameScript/GameCenter";
 import { gameData } from "../../Framework/GameScript/GameData/GameData";
+<<<<<<< HEAD
 import TargetNode from "./TargetNode";
+=======
+>>>>>>> main
 
 const {ccclass, property} = cc._decorator;
 
@@ -22,6 +25,7 @@ export default class UIRoot extends cc.Component {
     @property({type:cc.Label})
     LeftCardLabel:cc.Label = undefined;
 
+<<<<<<< HEAD
     @property({type:TargetNode})
     targetNode:TargetNode = undefined;
 
@@ -31,10 +35,14 @@ export default class UIRoot extends cc.Component {
     static UIROOT:UIRoot;
     start () {
         
+=======
+    start () {
+>>>>>>> main
         this.updateLeftCardUI();
         this.updateScoreUI();
         EVENT.on(EventId.addScore,this.onAddScore,this,false);
         EVENT.on(EventId.update_card_num,this.onChangeCardNum,this,false);
+<<<<<<< HEAD
         UIRoot.UIROOT = this;
     }
 
@@ -46,6 +54,8 @@ export default class UIRoot extends cc.Component {
         gameData._currentLevel ++;
         gameData.save();
         cc.director.loadScene("start");
+=======
+>>>>>>> main
     }
 
     updateScoreUI(){
@@ -59,7 +69,10 @@ export default class UIRoot extends cc.Component {
     onAddScore(addScore:number){
         gameData._score = gameData._score + addScore;
         this.updateScoreUI();
+<<<<<<< HEAD
         this.targetNode?.checkTarget();
+=======
+>>>>>>> main
     }
 
     onChangeCardNum(){

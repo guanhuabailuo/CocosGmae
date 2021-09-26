@@ -10,7 +10,10 @@ import { CardType, PoolType } from '../../Define/Type'
 import Card from '../../GamePlay/Card'
 import PoolBox from '../../GamePlay/PoolBox'
 import { CardInfo } from '../../UI/GamePlayNode'
+<<<<<<< HEAD
 import UIRoot from '../../UI/GamePlayUI/UIRoot'
+=======
+>>>>>>> main
 import { EVENT } from '../Event/EventMgr'
 import GameData, { gameData } from './GameData/GameData'
 import BaseLogicAction from './LogicScript/LogicAction/BaseLogicAction'
@@ -103,6 +106,7 @@ export default class GameCenter extends cc.Component {
                 this._ViewCenter.addUnit(UnitViewcp,pos);
             }
             gameData._leftCardNum = this._cardNodePool.size();
+<<<<<<< HEAD
             if(gameData._leftCardNum <= 0){
                 this.gameEnd();
             }
@@ -113,6 +117,11 @@ export default class GameCenter extends cc.Component {
         this.update = ()=>{};
         UIRoot.UIROOT.openGameEndUI();
     }
+=======
+            EVENT.emit(EventId.update_card_num);
+        }
+    }
+>>>>>>> main
 
     addCard2Mo(){
         if(this._cardNodePool.size()>0){
@@ -212,8 +221,13 @@ export default class GameCenter extends cc.Component {
             for (let k = 0; k < tongNum; k++) {
                 let cardInfo:CardInfo = {pooltype:PoolType.none}; 
                 cardInfo.number = j
+<<<<<<< HEAD
                 cardInfo.cardType = CardType.tong
                 cardInfo.pic = "Card/tong_"+j;
+=======
+                cardInfo.cardType = CardType.tiao
+                cardInfo.pic = "Card/tiao_"+j;
+>>>>>>> main
                 allCard.push(cardInfo);
             }
         }
@@ -222,11 +236,24 @@ export default class GameCenter extends cc.Component {
             for (let k = 0; k < wanNum; k++) {
                 let cardInfo:CardInfo = {pooltype:PoolType.none}; 
                 cardInfo.number = j
+<<<<<<< HEAD
                 cardInfo.cardType = CardType.wan
                 cardInfo.pic = "Card/wan_"+j;
                 allCard.push(cardInfo);
             }
         }
+=======
+                cardInfo.cardType = CardType.tiao
+                cardInfo.pic = "Card/tiao_"+j;
+                allCard.push(cardInfo);
+            }
+        }
+    
+
+        
+
+       
+>>>>>>> main
         return allCard;
     }
 
