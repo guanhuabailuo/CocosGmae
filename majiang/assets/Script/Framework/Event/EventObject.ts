@@ -89,7 +89,7 @@ export class EventObject extends cc.EventTarget{
     
                 }
             } catch(e){
-               
+                cc.error(callInfo);
                 cc.error("EVENT.on callback faild!" + e);
             }
         }

@@ -8,9 +8,7 @@ export default class Card{
     
     private _type: CardType;
     
-
     private _number: number;
-    
 
     private _node: cc.Node;
     

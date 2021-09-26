@@ -3939,6 +3939,15 @@
     "click": {
       "__uuid__": "6478b66d-cde2-4460-be3d-f4ebe9663a9f"
     },
+    "volumeSlider": {
+      "__id__": 46
+    },
+    "bgmToggle": {
+      "__id__": 75
+    },
+    "buttonToggle": {
+      "__id__": 93
+    },
     "_id": "5dCVfvYOdFPZUG8fkQnLSa"
   },
   {

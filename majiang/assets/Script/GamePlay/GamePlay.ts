@@ -2,7 +2,7 @@ import { CardType } from "../Define/Type";
 import CardPoolNode from "../UI/CardPoolNode";
 import GamePlayNode from "../UI/GamePlayNode";
 import SendCardPoolNode from "../UI/SendCardPoolNode";
-import WinCardPoolNode from "../UI/WinCardPoolNode";
+import WinCardPoolNode from "../UI/GamePlayUI/WinCardPoolNode";
 import CardPool from "./CardPool";
 
 const {ccclass, property} = cc._decorator;
