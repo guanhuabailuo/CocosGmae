@@ -1,0 +1,23 @@
+{
+  "__type__": "cc.Material",
+  "_name": "Card",
+  "_objFlags": 0,
+  "_native": "",
+  "_effectAsset": {
+    "__uuid__": "74fdcd8f-3b29-4008-ad5f-4a2074770aca"
+  },
+  "_techniqueIndex": 0,
+  "_techniqueData": {
+    "0": {
+      "props": {
+        "diffuseTexture": {
+          "__uuid__": "3667369f-0504-4508-b6a1-444b2c5d4a8e"
+        }
+      },
+      "defines": {
+        "USE_TEXTURE": true,
+        "USE_ALPHA_TEST": true
+      }
+    }
+  }
+}
