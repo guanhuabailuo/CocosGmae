@@ -7,7 +7,7 @@
 
 import { EventId } from "../../Define/EventId";
 import { EVENT } from "../../Framework/Event/EventMgr";
-import { CombTag, duanyaojiuFilter, qingyiseFilter, WinFilter, WinModle, yibeikou } from "../../Framework/GameScript/LogicScript/FilterNew";
+import { CombTag, dasanyuanFilter, dasixiFilter, duanyaojiuFilter, duiduihuFilter, qingyiseFilter, WinFilter, WinModle, yibeikou } from "../../Framework/GameScript/LogicScript/FilterNew";
 
 
 const {ccclass, property} = cc._decorator;
@@ -33,6 +33,9 @@ export default class WinCardPoolNode extends cc.Component {
         this.filters.push(new qingyiseFilter());
         this.filters.push(new duanyaojiuFilter());
         this.filters.push(new yibeikou());
+        this.filters.push(new duiduihuFilter());
+        this.filters.push(new dasixiFilter());
+        this.filters.push(new dasanyuanFilter());
     }
 
     start () {
@@ -72,6 +75,9 @@ export default class WinCardPoolNode extends cc.Component {
                 if(winTag != WinModle.none){
                     winTags.push(winTag);
                 }
+            }
+            if (winTags.length <= 0){
+                winTags.push(WinModle.pinghu);
             }
             this.index = 0;
             this.tags = new Array();

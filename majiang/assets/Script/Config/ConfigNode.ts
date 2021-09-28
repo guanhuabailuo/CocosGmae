@@ -1,5 +1,6 @@
 import { EventId } from "../Define/EventId";
 import { EVENT } from "../Framework/Event/EventMgr";
+import { gameData } from "../Framework/GameScript/GameData/GameData";
 
 
 const {ccclass, property} = cc._decorator;
@@ -20,12 +21,23 @@ export default class ConfigNode extends cc.Component {
     @property({type:cc.AudioClip})
     click:cc.AudioClip = undefined;
 
+
+    @property({type:cc.Slider})
+    volumeSlider:cc.Slider = undefined;
+
+    @property({type:cc.Toggle})
+    bgmToggle:cc.Toggle = undefined;
+
+    @property({type:cc.Toggle})
+    buttonToggle:cc.Toggle = undefined;
+
     _clickAduioNum = -1;
 
     _bgmAduioNum = -1;
 
     _buttonEffect = true;
 
+    _bgmStarted = false;
     onLoad(){
         this.settingNode.scale = 0;
         cc.assetManager.loadBundle("Texture");
@@ -33,8 +45,15 @@ export default class ConfigNode extends cc.Component {
         this.loadConfig("LevelConfig",this.levelConfig);
         EVENT.on(EventId.open_setting_view,this.openSetting,this);
         EVENT.on(EventId.Button_touch,this.onTouchButton,this);
-        this._bgmAduioNum = cc.audioEngine.playMusic(this.bgm,true);
         ConfigNode.INS = this;
+        gameData.load();
+        this.volumeSlider.progress = gameData._volume;
+        this.bgmToggle.isChecked = gameData.isOpenBgm();
+        if(gameData.isOpenBgm()){
+            this._bgmAduioNum = cc.audioEngine.playMusic(this.bgm,true);
+            this._bgmStarted = true;
+        }
+        this.buttonToggle.isChecked = gameData.isOpenButtonEffect();
     }
 
 
@@ -52,7 +71,7 @@ export default class ConfigNode extends cc.Component {
             bondle.load(name,cc.JsonAsset,(error,ass)=>{
                 let JsonAsset = ass as cc.JsonAsset
                 this.levelConfig = JsonAsset.json
-                console.info(this);
+                gameData.allConfig = JsonAsset.json;
             })
         })       
     }
@@ -69,32 +88,37 @@ export default class ConfigNode extends cc.Component {
 
     closeSetting(){
         this.onTouchButton();
+        gameData.save();
         cc.tween(this.settingNode).to(0.2,{scale:0}).start().call(()=>{
             this.settingNode.active = false;
         });
     }
 
     changeVolume(slider:cc.Slider){
-        cc.audioEngine.setMusicVolume(slider.progress);
+        gameData._volume  = slider.progress;
+        cc.audioEngine.setMusicVolume(gameData._volume);
     }
 
     enabledBgm(ta:cc.Toggle){
-        console.info(ta.isChecked);
         if(ta.isChecked){
+            if(!this._bgmStarted){
+                this._bgmAduioNum = cc.audioEngine.playMusic(this.bgm,true);
+                this._bgmStarted = true;
+            }
             cc.audioEngine.resumeMusic();
-           
         }else{
             cc.audioEngine.pauseMusic();
         }
+        gameData.setOpenBgm(ta.isChecked);
         
     }
 
     enabledButtonEffect(ta:cc.Toggle){
-        this._buttonEffect = ta.isChecked;
+        gameData.setOpenButtonEffect(ta.isChecked);
     }
 
     onTouchButton(){
-        if(!this._buttonEffect){
+        if(!gameData.isOpenButtonEffect()){
             return;
         }
         cc.audioEngine.stop(this._clickAduioNum);

@@ -7,6 +7,7 @@
 
 import { EventId } from "../Define/EventId";
 import { EVENT } from "../Framework/Event/EventMgr";
+import { gameData } from "../Framework/GameScript/GameData/GameData";
 import { getWinName, getWinScore, WinModle } from "../Framework/GameScript/LogicScript/FilterNew";
 import { Game_Play_ins } from "../GamePlay/GamePlay";
 
@@ -18,6 +19,8 @@ export default class NewClass extends cc.Component {
     
     @property({type:cc.Node})
     winView:cc.Node = null;
+
+    _winTagGroup:cc.Node;
     @property({type:cc.Prefab})
     tag:cc.Prefab = null;
     
@@ -30,6 +33,7 @@ export default class NewClass extends cc.Component {
         EVENT.on(EventId.win,this.onWin,this,false)
         this.winView.scale = 0;
         this.winView.active = false;
+        this._winTagGroup = this.winView.getChildByName("TagView")
         this._TagPool = new cc.NodePool();
         for (let i = 0; i < 10; i++) {
            this._TagPool.put(cc.instantiate(this.tag));   
@@ -51,18 +55,20 @@ export default class NewClass extends cc.Component {
             let name = getWinName(model);
             let score = getWinScore(model);
             let node = this._TagPool.get();
+            console.info(node);
             node.getChildByName("Name").getComponent(cc.Label).string = name;
             node.getChildByName("Score").getComponent(cc.Label).string = score+"";
-            node.setParent(this.winView);
+            node.setParent(this._winTagGroup);
             allSocre += score;
+            gameData.addWinModel(model);
         }
         this.socre.string = "分数:"+allSocre;
         EVENT.emit(EventId.addScore,allSocre);
         cc.tween(this.winView).to(0.1,{scale:1}).to(2,{}).to(0.5,{scale:0}).call(()=>{
-            this.winView.active = false;
-            this.winView.children.forEach(e=>{
+            this._winTagGroup.children.forEach(e=>{
                 this._TagPool.put(e);
             })
+            this.winView.active = false;
         }).start()
     }
 }

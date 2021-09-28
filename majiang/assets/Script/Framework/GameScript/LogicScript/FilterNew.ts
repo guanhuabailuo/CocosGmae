@@ -83,12 +83,31 @@ export interface WinTag {
     cardType?: CardType;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 export enum WinModle {
 
     qingyise = "qingyise",
     duanyaojiu = "duanyaojiu",
     yibeikou = "yibeikou",
     none = "none",
+    duiduihu = "duiduihu",
+    dasixi = "dasixi",
+    pinghu = "pinghu",
+    dasanyuan = "dasanyuan"
 }
 
 export function getWinName(winModel:WinModle):string{
@@ -99,18 +118,50 @@ export function getWinName(winModel:WinModle):string{
             return "断幺九"
         case WinModle.qingyise:
             return "一杯口"
+        case WinModle.duiduihu:
+            return "对对胡"
+        case WinModle.pinghu:
+            return "平胡"
     }
     return "平胡"
 }
 
+export function castString(str: string): string {
+    if (str == 'score') {
+        return '分数:';
+    }
+    if (str == 'dasixi') {
+        return '大四喜x';
+    }
+    if (str == 'qingyise') {
+        return '清一色x';
+    }
+    if (str == 'duanyaojiu') {
+        return '断幺九x';
+    }
+    if (str == 'duiduihu') {
+        return '对对胡x';
+    }
+    if (str == 'pinghu') {
+        return '平胡x';
+    }
+    return "X";
+}
+
 export function getWinScore(winModel:WinModle):number{
     switch(winModel){
-        case WinModle.qingyise:
-            return 5000;
+        case WinModle.dasixi:
+            return 8000;
         case WinModle.duanyaojiu:
             return 1000;
         case WinModle.qingyise:
+            return 5000
+        case WinModle.duiduihu:
+            return 2000
+        case WinModle.pinghu:
             return 1000
+        case WinModle.dasanyuan:
+            return 5000
     }
     return 1000;
 }
@@ -137,7 +188,60 @@ export class qingyiseFilter extends WinFilter {
     }
 }
 
-export function createArray(tag_1: CombTag, tag_2: CombTag, tag_3: CombTag, tag_4: CombTag){
+export class duiduihuFilter extends WinFilter {
+
+    check(tag_1: CombTag, tag_2: CombTag, tag_3: CombTag, tag_4: CombTag): WinModle {
+        let winTag: WinTag = {}
+        if (tag_1.winType != CombType.peng || tag_2.winType != CombType.peng || tag_3.winType != CombType.peng || tag_4.winType != CombType.peng) {
+            return WinModle.none
+        }
+        return WinModle.duiduihu;
+    }
+}
+
+export class dasixiFilter extends WinFilter {
+
+    check(tag_1: CombTag, tag_2: CombTag, tag_3: CombTag, tag_4: CombTag): WinModle {
+        if (tag_1.cardtype != CardType.feng || tag_2.cardtype != CardType.feng || tag_3.cardtype != CardType.feng || tag_4.cardtype != CardType.feng) {
+            return WinModle.none
+        }
+        let array:number[] = [1,2,3,4];
+        let tags =  createArray(tag_1,tag_2,tag_3,tag_4);
+        tags.forEach(t=>{
+          let index =  array.indexOf((t as CombTag).num );
+          if(index != -1){
+              array.slice(index,1);
+          }
+        })
+        if(array.length > 0){
+            return WinModle.none;
+        }
+        return WinModle.dasixi;
+    }
+}
+
+export class dasanyuanFilter extends WinFilter {
+
+    check(tag_1: CombTag, tag_2: CombTag, tag_3: CombTag, tag_4: CombTag): WinModle {
+        let array:number[] = [1,2,3];
+        let tags =  createArray(tag_1,tag_2,tag_3,tag_4);
+        tags.forEach(t =>{
+            if(t.cardtype == CardType.zi){
+                let index = array.indexOf(t.num);
+                if (index != -1){
+                    array.slice(index,1);
+                }
+            }
+        })
+        if(array.length > 0){
+            return WinModle.dasanyuan;
+        }
+        return WinModle.none;
+    }
+}
+
+
+export function createArray(tag_1: CombTag, tag_2: CombTag, tag_3: CombTag, tag_4: CombTag):CombTag[]{
     let tagArray = [];
     tagArray.push(tag_1);
     tagArray.push(tag_2);

@@ -10,6 +10,7 @@ import { CardType, PoolType } from '../../Define/Type'
 import Card from '../../GamePlay/Card'
 import PoolBox from '../../GamePlay/PoolBox'
 import { CardInfo } from '../../UI/GamePlayNode'
+import UIRoot from '../../UI/GamePlayUI/UIRoot'
 import { EVENT } from '../Event/EventMgr'
 import GameData, { gameData } from './GameData/GameData'
 import BaseLogicAction from './LogicScript/LogicAction/BaseLogicAction'
@@ -102,8 +103,15 @@ export default class GameCenter extends cc.Component {
                 this._ViewCenter.addUnit(UnitViewcp,pos);
             }
             gameData._leftCardNum = this._cardNodePool.size();
+            if(gameData._leftCardNum <= 0){
+                this.gameEnd();
+            }
             EVENT.emit(EventId.update_card_num);
         }
+    }
+    gameEnd() {
+        this.update = ()=>{};
+        UIRoot.UIROOT.openGameEndUI();
     }
 
     addCard2Mo(){
@@ -204,8 +212,8 @@ export default class GameCenter extends cc.Component {
             for (let k = 0; k < tongNum; k++) {
                 let cardInfo:CardInfo = {pooltype:PoolType.none}; 
                 cardInfo.number = j
-                cardInfo.cardType = CardType.tiao
-                cardInfo.pic = "Card/tiao_"+j;
+                cardInfo.cardType = CardType.tong
+                cardInfo.pic = "Card/tong_"+j;
                 allCard.push(cardInfo);
             }
         }
@@ -214,16 +222,11 @@ export default class GameCenter extends cc.Component {
             for (let k = 0; k < wanNum; k++) {
                 let cardInfo:CardInfo = {pooltype:PoolType.none}; 
                 cardInfo.number = j
-                cardInfo.cardType = CardType.tiao
-                cardInfo.pic = "Card/tiao_"+j;
+                cardInfo.cardType = CardType.wan
+                cardInfo.pic = "Card/wan_"+j;
                 allCard.push(cardInfo);
             }
         }
-    
-
-        
-
-       
         return allCard;
     }
 
