@@ -5,6 +5,7 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import GameData, { RoomData } from "../GameScript/GameData/GameData";
 import NetNode from "../Net/NetNode";
 import { RequestCode, ResponseCode, RoomMember } from "../Net/WebSocket/Code";
 import { ClientPackage, ServerPackage } from "../Net/WebSocket/WebSocketClient";
@@ -20,7 +21,7 @@ export default class RoomNode extends cc.Component {
     memberPrefab:cc.Prefab = null;
 
     @property({type:cc.Label})
-    idLabel:cc.Label
+    idLabel:cc.Label = null;
 
     id:number;
 
@@ -29,12 +30,14 @@ export default class RoomNode extends cc.Component {
     start () {
         NetNode.addMessageListener(ResponseCode.room_member_bordcast,this.onMemberChange,this);
         NetNode.addMessageListener(ResponseCode.createRome,this.onCreatRoom,this);
+        NetNode.addMessageListener(ResponseCode.room_start_bordcast,this.onRoomStart,this);
         this.initMembers = new Map();
     }
 
     onDestroy(){
         NetNode.removeMessageListener(ResponseCode.room_member_bordcast,this.onCreatRoom,this);
         NetNode.removeMessageListener(ResponseCode.createRome,this.onCreatRoom,this);
+        NetNode.removeMessageListener(ResponseCode.room_start_bordcast,this.onRoomStart,this);
     }
 
     onCreatRoom(_package:ServerPackage) {
@@ -69,17 +72,31 @@ export default class RoomNode extends cc.Component {
     }
 
     joinRoom(){
-        let key = Math.floor(Math.random()*10000)+""
-        let memberInfo:RoomMember = {name:key,uuid:NetNode.client._uuid}
+        let memberInfo:RoomMember = {name:NetNode.client._uuid,uuid:NetNode.client._uuid}
         let  data = {id:this.id,info:memberInfo}
         let _package:ClientPackage = new ClientPackage(RequestCode.joinRome,data);
         NetNode.sendMessage(_package);
     }
     
-    setRoomId(idStr:string){
-        let id =  Number.parseInt(idStr);
+    setRoomId(editBox:cc.EditBox){
+        let id =  Number.parseInt(editBox.string);
         this.id = id;
         this.idLabel.string = "房间ID"+id;
     }
+
+    onRoomStart(_package:ServerPackage){
+        let data = _package.data;
+        let members:RoomMember[] = data.members;
+        GameData.INS.roomeDate = {members:members};
+        GameData.INS.roomId = this.id;
+        cc.director.loadScene("helloworld");
+    }
+
+    roomStart(){
+        let data = {roomId:this.id}
+        let _package:ClientPackage = new ClientPackage(RequestCode.roomStart,data);
+        NetNode.sendMessage(_package);
+    }
+
 
 }

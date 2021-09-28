@@ -15,7 +15,7 @@ export default class MemberNode extends cc.Component {
     name:string;
 
     @property({type:cc.Label})
-    nameLabel:cc.Label
+    nameLabel:cc.Label = null;
 
     start () {
         this.nameLabel.string = this.name;
