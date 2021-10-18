@@ -68,6 +68,14 @@ export default class GameData{
     }
 
     loadNextLevelConfig(){
+        // if(this._currentLevel >= this.allConfig.length){
+        //     this._currentLevel = 0;
+        // }
+        // this._currentConfig = this.allConfig[this._currentLevel];
+    }
+
+    setCurrentleve(level){
+        this._currentLevel = parseInt(level);
         if(this._currentLevel >= this.allConfig.length){
             this._currentLevel = 0;
         }
@@ -78,6 +86,9 @@ export default class GameData{
         this._score = 0;
         this._leftCardNum = 0;
         this._currentConfig = JSON.parse('{"dead":[0,6,24,42,48],"initCard":{"feng":4,"zi":4,"tiao":4,"wan":4,"tong":4},"target":[{"type":"score","target":800},{"type":"duanyaojiu","target":1},{"type":"qingyise","target":1}]}');
+        if(this.allConfig){
+            this._currentConfig = this.allConfig[this._currentLevel];
+        }
     }
 
     getScale(){

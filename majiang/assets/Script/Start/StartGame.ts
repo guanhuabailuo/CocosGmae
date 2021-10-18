@@ -13,17 +13,15 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class NewClass extends cc.Component {
 
+    @property(cc.Node)
+    levelNode:cc.Node = undefined;
+
     start () {
 
     }
 
     StartGame(){
-        ConfigNode.INS.removeCanvas();
-        //cc.game.addPersistRootNode(ConfigNode.INS.node);
-        gameData.loadNextLevelConfig();
-        cc.director.loadScene("helloworld",()=>{
-            //ConfigNode.INS.joinCanvas();
-        })
+        this.levelNode.active = true;
     }
    
 }

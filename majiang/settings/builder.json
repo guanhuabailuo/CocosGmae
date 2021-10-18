@@ -1,14 +1,14 @@
 {
   "excludeScenes": [],
   "orientation": {
-    "landscapeLeft": true,
-    "landscapeRight": true,
-    "portrait": false,
+    "landscapeLeft": false,
+    "landscapeRight": false,
+    "portrait": true,
     "upsideDown": false
   },
   "packageName": "org.cocos2d.helloworld",
   "startScene": "1682eb5c-f406-46e9-b38c-f8019858dc17",
-  "title": "hello_world",
+  "title": "quexiao",
   "webOrientation": "auto",
   "inlineSpriteFrames": true,
   "inlineSpriteFrames_native": true,
@@ -23,7 +23,7 @@
   "fb-instant-games": {},
   "android": {
     "REMOTE_SERVER_ROOT": "",
-    "packageName": "org.cocos2d.demo"
+    "packageName": "com.lz.xt.www"
   },
   "ios": {
     "REMOTE_SERVER_ROOT": "",

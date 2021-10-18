@@ -121,12 +121,12 @@ export default class LogicCenter {
         if(b){
             GameCenter.GAME_CENTER.pushViewAction(new TouchStartViewAction(this._cardPool.selectCards[1].id+"",undefined,false));
         }
-        
-    
         let unit = this._unitMap.get(action.targetUid) as CardUnit;
-        this.removeOneUnit(unit._card);
-        GameCenter.GAME_CENTER.pushViewAction(new RemoveViewAction(action.targetUid+""));
-        GameCenter.GAME_CENTER.addCard2Mo();
+        if(unit){
+            this.removeOneUnit(unit._card);
+            GameCenter.GAME_CENTER.pushViewAction(new RemoveViewAction(action.targetUid+""));
+            GameCenter.GAME_CENTER.addCard2Mo();
+        }
         this._cardPool.selectCards = []
     }
 
@@ -181,6 +181,9 @@ export default class LogicCenter {
     }
 
     resetSelectCard(){
+        if(this._cardPool.selectCards.length == 0){
+            return;
+        }
         let a = this._cardPool.selectCards[0];
         let b = this._cardPool.selectCards[1];
         if(a.pooltype != PoolType.SendPool && b.pooltype != PoolType.SendPool){
